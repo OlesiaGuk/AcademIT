@@ -37,8 +37,8 @@ public class Range {
         if (from >= range.to || to <= range.from) {
             return null;
         }
-        double max = getMax(from, range.from);
-        double min = getMin(to, range.to);
+        double max = Math.max(from, range.from);
+        double min = Math.min(to, range.to);
         return new Range(max, min);
     }
 
@@ -46,8 +46,8 @@ public class Range {
         if (from > range.to || to < range.from) {
             return new Range[]{new Range(from, to), new Range(range.from, range.to)};
         }
-        double min = getMin(from, range.from);
-        double max = getMax(to, range.to);
+        double min = Math.min(from, range.from);
+        double max = Math.max(to, range.to);
         return new Range[]{new Range(min, max)};
     }
 
@@ -55,8 +55,6 @@ public class Range {
         if (from >= range.to || to <= range.from) {
             return new Range[]{new Range(from, to)};
         }
-
-
         if (from < range.from && to > range.to) {
             return new Range[]{new Range(from, range.from), new Range(range.to, to)};
         }
@@ -66,20 +64,11 @@ public class Range {
         if (from < range.from && to <= range.to) {
             return new Range[]{new Range(from, range.from)};
         }
-
         return new Range[]{new Range(range.to, to)};
     }
 
     @Override
     public String toString() {
         return ("(" + from + ", " + to + ")");
-    }
-
-    private double getMin(double a, double b) {
-        return (a < b) ? a : b;
-    }
-
-    private double getMax(double a, double b) {
-        return (a > b) ? a : b;
     }
 }
