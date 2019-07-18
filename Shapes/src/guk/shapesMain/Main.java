@@ -32,7 +32,7 @@ public class Main {
         Arrays.sort(shapesArray, shapesPerimeterComparator);
 
         System.out.println(System.lineSeparator() + "Фигура со вторым по величине периметром: ");
-        Shape secondMaxPerimeterShape = getSecondMaxPerimeter(shapesArray);
+        Shape secondMaxPerimeterShape = getSecondMaxPerimeterShape(shapesArray);
         if (secondMaxPerimeterShape == null) {
             System.out.println("Фигура со вторым по величине периметром отсутствует в списке");
         } else {
@@ -44,7 +44,7 @@ public class Main {
         }
     }
 
-    private static Shape getSecondMaxPerimeter(Shape[] shapesArray) {
+    private static Shape getSecondMaxPerimeterShape(Shape[] shapesArray) {
         double max = shapesArray[0].getPerimeter();
         for (int i = 1; i < shapesArray.length; i++) {
             if (shapesArray[i].getPerimeter() < max) {

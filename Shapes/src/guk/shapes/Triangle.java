@@ -1,5 +1,7 @@
 package guk.shapes;
 
+import guk.shapesMain.UtilityFunctions;
+
 public class Triangle implements Shape {
     private double x1;
     private double y1;
@@ -65,6 +67,7 @@ public class Triangle implements Shape {
         this.y3 = y3;
     }
 
+    @Override
     public double getWidth() {
         double max = getMax(x1, x2, x3);
         double min = getMin(x1, x2, x3);
@@ -72,6 +75,7 @@ public class Triangle implements Shape {
         return max - min;
     }
 
+    @Override
     public double getHeight() {
         double max = getMax(y1, y2, y3);
         double min = getMax(y1, y2, y3);
@@ -79,6 +83,7 @@ public class Triangle implements Shape {
         return max - min;
     }
 
+    @Override
     public double getArea() {
         double sideABLength = getTriangleSideLength(x1, y1, x2, y2);
         double sideBCLength = getTriangleSideLength(x2, y2, x3, y3);
@@ -88,6 +93,7 @@ public class Triangle implements Shape {
         return Math.sqrt(triangleHalfPerimeter * (triangleHalfPerimeter - sideABLength) * (triangleHalfPerimeter - sideBCLength) * (triangleHalfPerimeter - sideACLength));
     }
 
+    @Override
     public double getPerimeter() {
         double sideABLength = getTriangleSideLength(x1, y1, x2, y2);
         double sideBCLength = getTriangleSideLength(x2, y2, x3, y3);
@@ -127,7 +133,7 @@ public class Triangle implements Shape {
         String x1y1 = "(" + x1 + ", " + y1 + ")";
         String x2y2 = "(" + x2 + ", " + y2 + ")";
         String x3y3 = "(" + x3 + ", " + y3 + ")";
-        return ("Треугольник с вершинами " + x1y1 + x2y2 + x3y3 + ". Площадь = " + (double) Math.round(getArea() * 100) / 100 + ", периметр = " + (double) Math.round(getPerimeter() * 100) / 100);
+        return "Треугольник с вершинами " + x1y1 + x2y2 + x3y3 + ". Площадь = " + UtilityFunctions.twoDecimalPlacesRound(getArea()) + ", периметр = " + UtilityFunctions.twoDecimalPlacesRound(getPerimeter());
     }
 
     @Override

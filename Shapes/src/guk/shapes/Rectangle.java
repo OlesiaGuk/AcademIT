@@ -1,5 +1,7 @@
 package guk.shapes;
 
+import guk.shapesMain.UtilityFunctions;
+
 public class Rectangle implements Shape {
     private double sideA;
     private double sideB;
@@ -25,25 +27,29 @@ public class Rectangle implements Shape {
         return sideB;
     }
 
+    @Override
     public double getWidth() {
         return sideA;
     }
 
+    @Override
     public double getHeight() {
         return sideB;
     }
 
+    @Override
     public double getArea() {
         return sideA * sideB;
     }
 
+    @Override
     public double getPerimeter() {
         return (sideA + sideB) * 2;
     }
 
     @Override
     public String toString() {
-        return ("Прямоугольник со сторонами " + sideA + " и " + sideB + ". Площадь = " + (double) Math.round(getArea() * 100) / 100 + ", периметр = " + (double) Math.round(getPerimeter() * 100) / 100);
+        return "Прямоугольник со сторонами " + sideA + " и " + sideB + ". Площадь = " + UtilityFunctions.twoDecimalPlacesRound(getArea()) + ", периметр = " + UtilityFunctions.twoDecimalPlacesRound(getPerimeter());
     }
 
     @Override

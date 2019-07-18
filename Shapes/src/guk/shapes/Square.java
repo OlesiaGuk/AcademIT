@@ -1,5 +1,7 @@
 package guk.shapes;
 
+import guk.shapesMain.UtilityFunctions;
+
 public class Square implements Shape {
     private double sideLength;
 
@@ -15,25 +17,29 @@ public class Square implements Shape {
         return sideLength;
     }
 
+    @Override
     public double getWidth() {
         return sideLength;
     }
 
+    @Override
     public double getHeight() {
         return sideLength;
     }
 
+    @Override
     public double getArea() {
         return Math.pow(sideLength, 2);
     }
 
+    @Override
     public double getPerimeter() {
         return sideLength * 4;
     }
 
     @Override
     public String toString() {
-        return ("Квадрат со стороной " + sideLength + ". Площадь = " + (double) Math.round(getArea() * 100) / 100 + ", периметр = " + (double) Math.round(getPerimeter() * 100) / 100);
+        return "Квадрат со стороной " + sideLength + ". Площадь = " + UtilityFunctions.twoDecimalPlacesRound(getArea()) + ", периметр = " + UtilityFunctions.twoDecimalPlacesRound(getPerimeter());
     }
 
     @Override

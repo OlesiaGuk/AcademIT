@@ -1,5 +1,7 @@
 package guk.shapes;
 
+import guk.shapesMain.UtilityFunctions;
+
 public class Circle implements Shape {
     private double radius;
 
@@ -15,25 +17,29 @@ public class Circle implements Shape {
         return radius;
     }
 
+    @Override
     public double getWidth() {
         return radius * 2;
     }
 
+    @Override
     public double getHeight() {
         return radius * 2;
     }
 
+    @Override
     public double getArea() {
         return Math.PI * Math.pow(radius, 2);
     }
 
+    @Override
     public double getPerimeter() {
         return 2 * Math.PI * radius;
     }
 
     @Override
     public String toString() {
-        return ("Круг с радиусом " + radius + ". Площадь = " + (double) Math.round(getArea() * 100) / 100 + ", длина окружности = " + (double) Math.round(getPerimeter() * 100) / 100);
+        return "Круг с радиусом " + radius + ". Площадь = " + UtilityFunctions.twoDecimalPlacesRound(getArea()) + ", длина окружности = " + UtilityFunctions.twoDecimalPlacesRound(getPerimeter());
     }
 
     @Override
