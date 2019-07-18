@@ -15,7 +15,7 @@ public class Main {
             System.out.printf("Число %.2f не принадлежит диапазону от %.2f до %.2f %n", number, range.getFrom(), range.getTo());
         }
 
-        Range secondRange = new Range(-2, 7);
+        Range secondRange = new Range(-3, 5);
 
         System.out.println();
         System.out.println("Пересечение: " + range.getIntersection(secondRange));

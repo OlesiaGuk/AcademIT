@@ -55,15 +55,18 @@ public class Range {
         if (from >= range.to || to <= range.from) {
             return new Range[]{new Range(from, to)};
         }
+
+
         if (from < range.from && to > range.to) {
             return new Range[]{new Range(from, range.from), new Range(range.to, to)};
         }
-        if (from >= range.from && to < range.to) {
+        if (from >= range.from && to <= range.to) {
             return new Range[0];
         }
-        if (from < range.from && to < range.to) {
+        if (from < range.from && to <= range.to) {
             return new Range[]{new Range(from, range.from)};
         }
+
         return new Range[]{new Range(range.to, to)};
     }
 
@@ -80,9 +83,3 @@ public class Range {
         return (a > b) ? a : b;
     }
 }
-
-
-/*
-6. В разности есть ошибки для некоторых случаев когда пересечение есть, но 1 конец совпадает
-
- */
