@@ -37,36 +37,22 @@ public class Range {
         if (from >= range.to || to <= range.from) {
             return null;
         }
-        if (range.from >= from && range.to <= to) {
-            return new Range(range.from, range.to);
-        }
-        if (from >= range.from && to <= range.to) {
-            return new Range(from, to);
-        }
-        if (from < range.from && to < range.to) {
-            return new Range(range.from, to);
-        }
-        return new Range(from, range.to);
+        double max = getMax(from, range.from);
+        double min = getMin(to, range.to);
+        return new Range(max, min);
     }
 
     public Range[] getUnion(Range range) {
         if (from > range.to || to < range.from) {
             return new Range[]{new Range(from, to), new Range(range.from, range.to)};
         }
-        if (range.from > from && range.to < to) {
-            return new Range[]{new Range(from, to)};
-        }
-        if (from > range.from && to < range.to) {
-            return new Range[]{new Range(range.from, range.to)};
-        }
-        if (from <= range.from && to < range.to) {
-            return new Range[]{new Range(from, range.to)};
-        }
-        return new Range[]{new Range(range.from, to)};
+        double min = getMin(from, range.from);
+        double max = getMax(to, range.to);
+        return new Range[]{new Range(min, max)};
     }
 
     public Range[] getDifference(Range range) {
-        if (from > range.to || to < range.from) {
+        if (from >= range.to || to <= range.from) {
             return new Range[]{new Range(from, to)};
         }
         if (from < range.from && to > range.to) {
@@ -85,4 +71,18 @@ public class Range {
     public String toString() {
         return ("(" + from + ", " + to + ")");
     }
+
+    private double getMin(double a, double b) {
+        return (a < b) ? a : b;
+    }
+
+    private double getMax(double a, double b) {
+        return (a > b) ? a : b;
+    }
 }
+
+
+/*
+6. В разности есть ошибки для некоторых случаев когда пересечение есть, но 1 конец совпадает
+
+ */
