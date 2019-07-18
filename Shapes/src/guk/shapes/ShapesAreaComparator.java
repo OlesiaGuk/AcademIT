@@ -2,9 +2,9 @@ package guk.shapes;
 
 import java.util.Comparator;
 
-class ShapesAreaComparator implements Comparator<Shape> {
+public class ShapesAreaComparator implements Comparator<Shape> {
     public int compare(Shape shape1, Shape shape2) {
-        if (shape1.getArea() == shape2.getArea()) {
+        if (Double.compare(shape1.getArea(), shape2.getArea()) == 0) {
             return 0;
         } else if (shape1.getArea() > shape2.getArea()) {
             return -1;

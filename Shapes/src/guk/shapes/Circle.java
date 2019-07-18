@@ -35,4 +35,23 @@ public class Circle implements Shape {
     public String toString() {
         return ("Круг с радиусом " + radius + ". Площадь = " + (double) Math.round(getArea() * 100) / 100 + ", длина окружности = " + (double) Math.round(getPerimeter() * 100) / 100);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (o == null || o.getClass() != this.getClass()) {
+            return false;
+        }
+        Circle circle = (Circle) o;
+        return radius == circle.radius;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 37;
+        int hash = 1;
+        return prime * hash + Double.hashCode(radius);
+    }
 }
