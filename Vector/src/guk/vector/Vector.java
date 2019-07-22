@@ -51,17 +51,17 @@ public class Vector {
     }
 
     public Vector getVectorsSum(Vector vector) {
-        int minArraySize = Math.min(this.getSize(), vector.getSize());
-        int maxArraySize = Math.max(this.getSize(), vector.getSize());
+        int minArraySize = Math.min(getSize(), vector.getSize());
+        int maxArraySize = Math.max(getSize(), vector.getSize());
 
         double[] summaryArray = new double[maxArraySize];
         int i = 0;
         while (i < minArraySize) {
-            summaryArray[i] = this.componentsArray[i] + vector.componentsArray[i];
+            summaryArray[i] = componentsArray[i] + vector.componentsArray[i];
             i++;
         }
         if (this.getSize() == maxArraySize) {
-            System.arraycopy(this.componentsArray, i, summaryArray, i, summaryArray.length - i);
+            System.arraycopy(componentsArray, i, summaryArray, i, summaryArray.length - i);
         } else {
             System.arraycopy(vector.componentsArray, i, summaryArray, i, summaryArray.length - i);
         }
@@ -69,13 +69,13 @@ public class Vector {
     }
 
     public void getVectorScalarMultiply(double scalar) {
-        for (int i = 0; i < this.getSize(); i++) {
-            this.componentsArray[i] = this.componentsArray[i] * scalar;
+        for (int i = 0; i < getSize(); i++) {
+            componentsArray[i] = componentsArray[i] * scalar;
         }
     }
 
     public void getVectorReversal() {
-        this.getVectorScalarMultiply(-1);
+        getVectorScalarMultiply(-1);
     }
 
     public Vector getVectorsDifference(Vector vector) {
@@ -85,8 +85,8 @@ public class Vector {
 
     public double getVectorLength() {
         double squaresSum = 0;
-        for (int i = 0; i < this.getSize(); i++) {
-            squaresSum += Math.pow(this.getComponentsArray()[i], 2);
+        for (int i = 0; i < getSize(); i++) {
+            squaresSum += Math.pow(getComponentsArray()[i], 2);
         }
         return Math.sqrt(squaresSum);
     }
@@ -146,4 +146,57 @@ public class Vector {
         return prime * hash + Arrays.hashCode(componentsArray);
     }
 
+    public static Vector getVectorsSum(Vector vector1, Vector vector2) {
+        int minArraySize = Math.min(vector1.getSize(), vector2.getSize());
+        int maxArraySize = Math.max(vector1.getSize(), vector2.getSize());
+
+        double[] summaryArray = new double[maxArraySize];
+        int i = 0;
+        while (i < minArraySize) {
+            summaryArray[i] = vector1.componentsArray[i] + vector2.componentsArray[i];
+            i++;
+        }
+        if (vector1.getSize() == maxArraySize) {
+            System.arraycopy(vector1.componentsArray, i, summaryArray, i, summaryArray.length - i);
+        } else {
+            System.arraycopy(vector2.componentsArray, i, summaryArray, i, summaryArray.length - i);
+        }
+        return new Vector(summaryArray);
+    }
+
+    public static Vector getVectorsDifference(Vector vector1, Vector vector2) {
+        int minArraySize = Math.min(vector1.getSize(), vector2.getSize());
+        int maxArraySize = Math.max(vector1.getSize(), vector2.getSize());
+
+        double[] summaryArray = new double[maxArraySize];
+        int i = 0;
+        while (i < minArraySize) {
+            summaryArray[i] = vector1.componentsArray[i] - vector2.componentsArray[i];
+            i++;
+        }
+        if (vector1.getSize() == maxArraySize) {
+            System.arraycopy(vector1.componentsArray, i, summaryArray, i, summaryArray.length - i);
+        } else {
+            System.arraycopy(vector2.componentsArray, i, summaryArray, i, summaryArray.length - i);
+        }
+        return new Vector(summaryArray);
+    }
+
+    public static Vector getVectorsScalarMultiplication(Vector vector1, Vector vector2) {
+        int minArraySize = Math.min(vector1.getSize(), vector2.getSize());
+        int maxArraySize = Math.max(vector1.getSize(), vector2.getSize());
+
+        double[] summaryArray = new double[maxArraySize];
+        int i = 0;
+        while (i < minArraySize) {
+            summaryArray[i] = vector1.componentsArray[i] * vector2.componentsArray[i];
+            i++;
+        }
+        if (vector1.getSize() == maxArraySize) {
+            System.arraycopy(vector1.componentsArray, i, summaryArray, i, summaryArray.length - i);
+        } else {
+            System.arraycopy(vector2.componentsArray, i, summaryArray, i, summaryArray.length - i);
+        }
+        return new Vector(summaryArray);
+    }
 }
