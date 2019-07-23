@@ -10,7 +10,7 @@ public class Main {
         double[] array = {-3, 4};
         Vector vector = new Vector(5, array);
         System.out.println("vector = " + vector);
-        System.out.println("Длина вектора vector = " + vector.getSize());
+        System.out.println("Длина вектора vector = " + vector.getVectorLength());
 
         Vector vectorCopy = new Vector(vector);
         System.out.println("Копия вектора vector: " + vectorCopy);
