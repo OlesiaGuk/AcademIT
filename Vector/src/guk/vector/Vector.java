@@ -3,52 +3,56 @@ package guk.vector;
 import java.util.Arrays;
 
 public class Vector {
-    private double[] componentsArray;
+    private double[] components;
 
     public Vector(int n) {
-        if (n <= 0)
+        if (n <= 0) {
             throw new IllegalArgumentException("Размерность вектора должны быть > 0");
-        componentsArray = new double[n];
+        }
+        components = new double[n];
     }
 
     public Vector(Vector vector) {
-        this(vector.componentsArray);
+        this(vector.components);
     }
 
     public Vector(double[] array) {
-        componentsArray = new double[array.length];
-        System.arraycopy(array, 0, componentsArray, 0, array.length);
+        components = new double[array.length];
+        System.arraycopy(array, 0, components, 0, array.length);
     }
 
     public Vector(int n, double[] array) {
-        componentsArray = new double[n];
-        System.arraycopy(array, 0, componentsArray, 0, array.length);
-    }
-
-    public double[] getComponentsArray() {
-        return componentsArray;
-    }
-
-    public void setComponentsArray(double[] componentsArray) {
-        this.componentsArray = componentsArray;
+        components = new double[n];
+        System.arraycopy(array, 0, components, 0, array.length);
     }
 
     public int getSize() {
-        return componentsArray.length;
+        return components.length;
     }
 
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
-        int i = 0;
         s.append("{");
-        while (i < componentsArray.length - 1) {
-            s.append(componentsArray[i]).append(", ");
-            i++;
+        for (int i = 0; i < components.length - 1; i++) {
+            s.append(components[i]).append(", ");
         }
-        s.append(componentsArray[i]).append("}");
+        s.append(components[components.length - 1]).append("}");
         return s.toString();
     }
+/*
+    public String toString() {
+        StringBuilder s = new StringBuilder();
+        int i = 0;
+        s.append("{");
+        while (i < components.length - 1) {
+            s.append(components[i]).append(", ");
+            i++;
+        }
+        s.append(components[i]).append("}");
+        return s.toString();
+    }*/
+
 
     public Vector getVectorsSum(Vector vector) {
         int minArraySize = Math.min(getSize(), vector.getSize());
@@ -57,20 +61,20 @@ public class Vector {
         double[] summaryArray = new double[maxArraySize];
         int i = 0;
         while (i < minArraySize) {
-            summaryArray[i] = componentsArray[i] + vector.componentsArray[i];
+            summaryArray[i] = components[i] + vector.components[i];
             i++;
         }
         if (this.getSize() == maxArraySize) {
-            System.arraycopy(componentsArray, i, summaryArray, i, summaryArray.length - i);
+            System.arraycopy(components, i, summaryArray, i, summaryArray.length - i);
         } else {
-            System.arraycopy(vector.componentsArray, i, summaryArray, i, summaryArray.length - i);
+            System.arraycopy(vector.components, i, summaryArray, i, summaryArray.length - i);
         }
         return new Vector(summaryArray);
     }
 
     public void getVectorScalarMultiply(double scalar) {
         for (int i = 0; i < getSize(); i++) {
-            componentsArray[i] = componentsArray[i] * scalar;
+            components[i] = components[i] * scalar;
         }
     }
 
@@ -86,37 +90,37 @@ public class Vector {
     public double getVectorLength() {
         double squaresSum = 0;
         for (int i = 0; i < getSize(); i++) {
-            squaresSum += Math.pow(getComponentsArray()[i], 2);
+            squaresSum += Math.pow(getVectorComponentByIndex(i), 2);
         }
         return Math.sqrt(squaresSum);
     }
 
     public double getVectorComponentByIndex(int index) {
-        return componentsArray[index];
+        return components[index];
     }
 
     public Vector setVectorComponentByIndex(double newComponent, int index) {
-        if (index > componentsArray.length) {
+        if (index > components.length) {
             throw new IllegalArgumentException("Введенный индекс превышает размерность вектора");
         }
         if (index < 0) {
             throw new IllegalArgumentException("Индекс должен быть >= 0");
         }
-        double[] newComponentsArray = new double[componentsArray.length + 1];
+        double[] newComponents = new double[components.length + 1];
         int i = 0;
         while (i < index) {
-            newComponentsArray[i] = componentsArray[i];
+            newComponents[i] = components[i];
             i++;
         }
         int j = i;
-        newComponentsArray[j] = newComponent;
+        newComponents[j] = newComponent;
         j++;
-        while (j < newComponentsArray.length) {
-            newComponentsArray[j] = componentsArray[i];
+        while (j < newComponents.length) {
+            newComponents[j] = components[i];
             i++;
             j++;
         }
-        return new Vector(newComponentsArray);
+        return new Vector(newComponents);
     }
 
     @Override
@@ -128,11 +132,11 @@ public class Vector {
             return false;
         }
         Vector vector = (Vector) o;
-        if (componentsArray.length != vector.componentsArray.length) {
+        if (components.length != vector.components.length) {
             return false;
         }
-        for (int i = 0; i < componentsArray.length - 1; i++) {
-            if (componentsArray[i] != vector.componentsArray[i]) {
+        for (int i = 0; i < components.length - 1; i++) {
+            if (components[i] != vector.components[i]) {
                 return false;
             }
         }
@@ -143,7 +147,7 @@ public class Vector {
     public int hashCode() {
         final int prime = 37;
         int hash = 1;
-        return prime * hash + Arrays.hashCode(componentsArray);
+        return prime * hash + Arrays.hashCode(components);
     }
 
     public static Vector getVectorsSum(Vector vector1, Vector vector2) {
@@ -153,13 +157,13 @@ public class Vector {
         double[] summaryArray = new double[maxArraySize];
         int i = 0;
         while (i < minArraySize) {
-            summaryArray[i] = vector1.componentsArray[i] + vector2.componentsArray[i];
+            summaryArray[i] = vector1.components[i] + vector2.components[i];
             i++;
         }
         if (vector1.getSize() == maxArraySize) {
-            System.arraycopy(vector1.componentsArray, i, summaryArray, i, summaryArray.length - i);
+            System.arraycopy(vector1.components, i, summaryArray, i, summaryArray.length - i);
         } else {
-            System.arraycopy(vector2.componentsArray, i, summaryArray, i, summaryArray.length - i);
+            System.arraycopy(vector2.components, i, summaryArray, i, summaryArray.length - i);
         }
         return new Vector(summaryArray);
     }
@@ -171,13 +175,13 @@ public class Vector {
         double[] summaryArray = new double[maxArraySize];
         int i = 0;
         while (i < minArraySize) {
-            summaryArray[i] = vector1.componentsArray[i] - vector2.componentsArray[i];
+            summaryArray[i] = vector1.components[i] - vector2.components[i];
             i++;
         }
         if (vector1.getSize() == maxArraySize) {
-            System.arraycopy(vector1.componentsArray, i, summaryArray, i, summaryArray.length - i);
+            System.arraycopy(vector1.components, i, summaryArray, i, summaryArray.length - i);
         } else {
-            System.arraycopy(vector2.componentsArray, i, summaryArray, i, summaryArray.length - i);
+            System.arraycopy(vector2.components, i, summaryArray, i, summaryArray.length - i);
         }
         return new Vector(summaryArray);
     }
@@ -189,13 +193,13 @@ public class Vector {
         double[] summaryArray = new double[maxArraySize];
         int i = 0;
         while (i < minArraySize) {
-            summaryArray[i] = vector1.componentsArray[i] * vector2.componentsArray[i];
+            summaryArray[i] = vector1.components[i] * vector2.components[i];
             i++;
         }
         if (vector1.getSize() == maxArraySize) {
-            System.arraycopy(vector1.componentsArray, i, summaryArray, i, summaryArray.length - i);
+            System.arraycopy(vector1.components, i, summaryArray, i, summaryArray.length - i);
         } else {
-            System.arraycopy(vector2.componentsArray, i, summaryArray, i, summaryArray.length - i);
+            System.arraycopy(vector2.components, i, summaryArray, i, summaryArray.length - i);
         }
         return new Vector(summaryArray);
     }
