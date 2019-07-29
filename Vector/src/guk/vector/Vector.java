@@ -40,66 +40,52 @@ public class Vector {
         s.append(components[components.length - 1]).append("}");
         return s.toString();
     }
-/*
-    public String toString() {
-        StringBuilder s = new StringBuilder();
-        int i = 0;
-        s.append("{");
-        while (i < components.length - 1) {
-            s.append(components[i]).append(", ");
-            i++;
+
+    public void add (Vector vector) {
+        if (getSize() < vector.getSize()) {
+            components = Arrays.copyOf(components, vector.getSize());
+        } else if (getSize() > vector.getSize()) {
+            vector.components = Arrays.copyOf(vector.components, getSize());
         }
-        s.append(components[i]).append("}");
-        return s.toString();
-    }*/
-
-
-    public Vector getVectorsSum(Vector vector) {
-        int minArraySize = Math.min(getSize(), vector.getSize());
-        int maxArraySize = Math.max(getSize(), vector.getSize());
-
-        double[] summaryArray = new double[maxArraySize];
-        int i = 0;
-        while (i < minArraySize) {
-            summaryArray[i] = components[i] + vector.components[i];
-            i++;
-        }
-        if (this.getSize() == maxArraySize) {
-            System.arraycopy(components, i, summaryArray, i, summaryArray.length - i);
-        } else {
-            System.arraycopy(vector.components, i, summaryArray, i, summaryArray.length - i);
-        }
-        return new Vector(summaryArray);
-    }
-
-    public void getVectorScalarMultiply(double scalar) {
         for (int i = 0; i < getSize(); i++) {
-            components[i] = components[i] * scalar;
+            components[i] += vector.components[i];
         }
     }
 
-    public void getVectorReversal() {
-        getVectorScalarMultiply(-1);
+    public void subtract(Vector vector) {
+        if (getSize() < vector.getSize()) {
+            components = Arrays.copyOf(components, vector.getSize());
+        } else if (getSize() > vector.getSize()) {
+            vector.components = Arrays.copyOf(vector.components, getSize());
+        }
+        for (int i = 0; i < getSize(); i++) {
+            components[i] -= vector.components[i];
+        }
     }
 
-    public Vector getVectorsDifference(Vector vector) {
-        vector.getVectorReversal();
-        return getVectorsSum(vector);
+    public void multiplyByScalar(double scalar) {
+        for (int i = 0; i < getSize(); i++) {
+            components[i] *= scalar;
+        }
     }
 
-    public double getVectorLength() {
+    public void reverse() {
+        multiplyByScalar(-1);
+    }
+
+    public double getLength() {
         double squaresSum = 0;
-        for (int i = 0; i < getSize(); i++) {
-            squaresSum += Math.pow(getVectorComponentByIndex(i), 2);
+        for (double e : components) {
+            squaresSum += Math.pow(e, 2);
         }
         return Math.sqrt(squaresSum);
     }
 
-    public double getVectorComponentByIndex(int index) {
+    public double getComponentByIndex(int index) {
         return components[index];
     }
 
-    public Vector setVectorComponentByIndex(double newComponent, int index) {
+    public Vector setComponentByIndex(double newComponent, int index) {
         if (index > components.length) {
             throw new IllegalArgumentException("Введенный индекс превышает размерность вектора");
         }
@@ -150,7 +136,7 @@ public class Vector {
         return prime * hash + Arrays.hashCode(components);
     }
 
-    public static Vector getVectorsSum(Vector vector1, Vector vector2) {
+    public static Vector getSum(Vector vector1, Vector vector2) {
         int minArraySize = Math.min(vector1.getSize(), vector2.getSize());
         int maxArraySize = Math.max(vector1.getSize(), vector2.getSize());
 
@@ -168,7 +154,7 @@ public class Vector {
         return new Vector(summaryArray);
     }
 
-    public static Vector getVectorsDifference(Vector vector1, Vector vector2) {
+    public static Vector getDifference(Vector vector1, Vector vector2) {
         int minArraySize = Math.min(vector1.getSize(), vector2.getSize());
         int maxArraySize = Math.max(vector1.getSize(), vector2.getSize());
 
@@ -186,7 +172,7 @@ public class Vector {
         return new Vector(summaryArray);
     }
 
-    public static Vector getVectorsScalarMultiplication(Vector vector1, Vector vector2) {
+    public static Vector getScalarMultiplication(Vector vector1, Vector vector2) {
         int minArraySize = Math.min(vector1.getSize(), vector2.getSize());
         int maxArraySize = Math.max(vector1.getSize(), vector2.getSize());
 
