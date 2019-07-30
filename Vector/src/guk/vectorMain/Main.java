@@ -4,11 +4,6 @@ import guk.vector.Vector;
 
 public class Main {
     public static void main(String[] args) {
-        /*double[] testArray = new double[0];
-        Vector testVector = new Vector(0,testArray);
-        System.out.println(testVector);
-*/
-
         Vector emptyVector = new Vector(3);
         System.out.println("Пустой вектор: " + emptyVector);
 
@@ -31,18 +26,20 @@ public class Main {
         System.out.println("Разность vector и vector1 = " + vector);
 
         System.out.println();
-
         Vector vector2 = new Vector(vector);
         System.out.println("Копия вектора vector: " + vector2);
         vector2.setComponentByIndex(10, 0);
         System.out.println("Установка компоненты 10 по индексу 0 в вектор vector2 = " + vector2);
 
-        System.out.println("Скалярное произведение vector и vector2 = " + Vector.getScalarMultiplication(vector, vector2));
-        System.out.println("Разность векторов vector и vector2 = " + Vector.getDifference(vector, vector2));
-        //System.out.println("Разность векторов vector и vector2 = " + vector.getDifference(vector2));
+        System.out.println();
         System.out.println("Сумма векторов vector и vector2 = " + Vector.getSum(vector, vector2));
+        System.out.println("Разность векторов vector и vector2 = " + Vector.getDifference(vector, vector2));
+        System.out.println("Скалярное произведение vector и vector2 = " + Vector.getScalarMultiplication(vector, vector2));
 
+        System.out.println();
         Vector vector3 = new Vector(5, array);
-        System.out.println(vector.equals(vector3));
+        System.out.println("vector = " + vector);
+        System.out.println("vector3 = " + vector3);
+        System.out.println("vector == vector? " + vector3.equals(vector));
     }
 }

@@ -120,10 +120,10 @@ public class Vector {
             return false;
         }
         Vector vector = (Vector) o;
-        if (components.length != vector.components.length) {
+        if (getSize() != vector.getSize()) {
             return false;
         }
-        for (int i = 0; i < components.length - 1; i++) {
+        for (int i = 0; i < getSize(); i++) {
             if (components[i] != vector.components[i]) {
                 return false;
             }
@@ -139,39 +139,15 @@ public class Vector {
     }
 
     public static Vector getSum(Vector vector1, Vector vector2) {
-        int minArraySize = Math.min(vector1.getSize(), vector2.getSize());
-        int maxArraySize = Math.max(vector1.getSize(), vector2.getSize());
-
-        double[] summaryArray = new double[maxArraySize];
-        int i = 0;
-        while (i < minArraySize) {
-            summaryArray[i] = vector1.components[i] + vector2.components[i];
-            i++;
-        }
-        if (vector1.getSize() == maxArraySize) {
-            System.arraycopy(vector1.components, i, summaryArray, i, summaryArray.length - i);
-        } else {
-            System.arraycopy(vector2.components, i, summaryArray, i, summaryArray.length - i);
-        }
-        return new Vector(summaryArray);
+        Vector newVector = new Vector(vector1);
+        newVector.add(vector2);
+        return newVector;
     }
 
     public static Vector getDifference(Vector vector1, Vector vector2) {
-        int minArraySize = Math.min(vector1.getSize(), vector2.getSize());
-        int maxArraySize = Math.max(vector1.getSize(), vector2.getSize());
-
-        double[] summaryArray = new double[maxArraySize];
-        int i = 0;
-        while (i < minArraySize) {
-            summaryArray[i] = vector1.components[i] - vector2.components[i];
-            i++;
-        }
-        if (vector1.getSize() == maxArraySize) {
-            System.arraycopy(vector1.components, i, summaryArray, i, summaryArray.length - i);
-        } else {
-            System.arraycopy(vector2.components, i, summaryArray, i, summaryArray.length - i);
-        }
-        return new Vector(summaryArray);
+        Vector newVector = new Vector(vector1);
+        newVector.subtract(vector2);
+        return newVector;
     }
 
     public static Vector getScalarMultiplication(Vector vector1, Vector vector2) {
