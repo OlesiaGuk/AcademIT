@@ -4,6 +4,11 @@ import guk.vector.Vector;
 
 public class Main {
     public static void main(String[] args) {
+        /*double[] testArray = new double[0];
+        Vector testVector = new Vector(0,testArray);
+        System.out.println(testVector);
+*/
+
         Vector emptyVector = new Vector(3);
         System.out.println("Пустой вектор: " + emptyVector);
 
@@ -11,9 +16,6 @@ public class Main {
         Vector vector = new Vector(2, array);
         System.out.println("Вектор vector = " + vector);
         System.out.println("Длина вектора vector = " + vector.getLength());
-
-        Vector vectorCopy = new Vector(vector);
-        System.out.println("Копия вектора vector: " + vectorCopy);
 
         int index = 1;
         System.out.printf("Компонента вектора vector по индексу %d = %.2f %n", index, vector.getComponentByIndex(index));
@@ -30,8 +32,10 @@ public class Main {
 
         System.out.println();
 
-        Vector vector2 = vector.setComponentByIndex(10, 0);
-        System.out.println("vector2 = " + vector2);
+        Vector vector2 = new Vector(vector);
+        System.out.println("Копия вектора vector: " + vector2);
+        vector2.setComponentByIndex(10, 0);
+        System.out.println("Установка компоненты 10 по индексу 0 в вектор vector2 = " + vector2);
 
         System.out.println("Скалярное произведение vector и vector2 = " + Vector.getScalarMultiplication(vector, vector2));
         System.out.println("Разность векторов vector и vector2 = " + Vector.getDifference(vector, vector2));

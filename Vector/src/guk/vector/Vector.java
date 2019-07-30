@@ -17,11 +17,17 @@ public class Vector {
     }
 
     public Vector(double[] array) {
+        if (array.length == 0) {
+            throw new IllegalArgumentException("Размерность вектора должны быть > 0");
+        }
         components = new double[array.length];
         System.arraycopy(array, 0, components, 0, array.length);
     }
 
     public Vector(int n, double[] array) {
+        if (n <= 0) {
+            throw new IllegalArgumentException("Размерность вектора должны быть > 0");
+        }
         components = new double[n];
         System.arraycopy(array, 0, components, 0, array.length);
     }
@@ -41,7 +47,7 @@ public class Vector {
         return s.toString();
     }
 
-    public void add (Vector vector) {
+    public void add(Vector vector) {
         if (getSize() < vector.getSize()) {
             components = Arrays.copyOf(components, vector.getSize());
         } else if (getSize() > vector.getSize()) {
@@ -82,31 +88,27 @@ public class Vector {
     }
 
     public double getComponentByIndex(int index) {
-        return components[index];
-    }
-
-    public Vector setComponentByIndex(double newComponent, int index) {
-        if (index > components.length) {
-            throw new IllegalArgumentException("Введенный индекс превышает размерность вектора");
-        }
         if (index < 0) {
             throw new IllegalArgumentException("Индекс должен быть >= 0");
         }
-        double[] newComponents = new double[components.length + 1];
-        int i = 0;
-        while (i < index) {
-            newComponents[i] = components[i];
-            i++;
+        if (index > components.length) {
+            throw new ArrayIndexOutOfBoundsException("Введенный индекс превышает размерность вектора");
         }
-        int j = i;
-        newComponents[j] = newComponent;
-        j++;
-        while (j < newComponents.length) {
-            newComponents[j] = components[i];
-            i++;
-            j++;
+        return components[index];
+    }
+
+    public void setComponentByIndex(double newComponent, int index) {
+        if (index < 0) {
+            throw new IllegalArgumentException("Индекс должен быть >= 0");
         }
-        return new Vector(newComponents);
+        if (index > components.length) {
+            throw new ArrayIndexOutOfBoundsException("Введенный индекс превышает размерность вектора");
+        }
+        components = Arrays.copyOf(components, getSize() + 1);
+        for (int i = getSize() - 1; i > index; i--) {
+            components[i] = components[i - 1];
+        }
+        components[index] = newComponent;
     }
 
     @Override
