@@ -60,10 +60,10 @@ public class Matrix {
             s.append("{");
             int j = 0;
             while (j < matrixElementsArray[i].getSize() - 1) {
-                s.append(matrixElementsArray[i].getVectorComponentByIndex(j)).append(", ");
+                s.append(matrixElementsArray[i].getComponentByIndex(j)).append(", ");
                 j++;
             }
-            s.append(matrixElementsArray[i].getVectorComponentByIndex(j)).append("}");
+            s.append(matrixElementsArray[i].getComponentByIndex(j)).append("}");
             if (i != matrixElementsArray.length - 1) {
                 s.append(", ");
             }
