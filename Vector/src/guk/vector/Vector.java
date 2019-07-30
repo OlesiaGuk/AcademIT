@@ -105,9 +105,7 @@ public class Vector {
             throw new ArrayIndexOutOfBoundsException("Введенный индекс превышает размерность вектора");
         }
         components = Arrays.copyOf(components, getSize() + 1);
-        for (int i = getSize() - 1; i > index; i--) {
-            components[i] = components[i - 1];
-        }
+        System.arraycopy(components, index, components, index + 1, getSize() - index - 1);
         components[index] = newComponent;
     }
 
@@ -150,21 +148,13 @@ public class Vector {
         return newVector;
     }
 
-    public static Vector getScalarMultiplication(Vector vector1, Vector vector2) {
+    public static double getScalarMultiplication(Vector vector1, Vector vector2) {
         int minArraySize = Math.min(vector1.getSize(), vector2.getSize());
-        int maxArraySize = Math.max(vector1.getSize(), vector2.getSize());
 
-        double[] summaryArray = new double[maxArraySize];
-        int i = 0;
-        while (i < minArraySize) {
-            summaryArray[i] = vector1.components[i] * vector2.components[i];
-            i++;
+        double scalarMultiplication = 0;
+        for (int i = 0; i < minArraySize; i++) {
+            scalarMultiplication += vector1.components[i] * vector2.components[i];
         }
-        if (vector1.getSize() == maxArraySize) {
-            System.arraycopy(vector1.components, i, summaryArray, i, summaryArray.length - i);
-        } else {
-            System.arraycopy(vector2.components, i, summaryArray, i, summaryArray.length - i);
-        }
-        return new Vector(summaryArray);
+        return scalarMultiplication;
     }
 }

@@ -34,12 +34,23 @@ public class Main {
         System.out.println();
         System.out.println("Сумма векторов vector и vector2 = " + Vector.getSum(vector, vector2));
         System.out.println("Разность векторов vector и vector2 = " + Vector.getDifference(vector, vector2));
-        System.out.println("Скалярное произведение vector и vector2 = " + Vector.getScalarMultiplication(vector, vector2));
 
         System.out.println();
         Vector vector3 = new Vector(5, array);
         System.out.println("vector = " + vector);
         System.out.println("vector3 = " + vector3);
         System.out.println("vector == vector? " + vector3.equals(vector));
+
+        System.out.println();
+        Vector testVector1 = new Vector(new double[]{-1, 2, -5});
+        Vector testVector2 = new Vector(new double[]{3, -3, -3});
+        System.out.println("testVector1 = " + testVector1);
+        System.out.println("testVector2 = " + testVector2);
+        System.out.println("Скалярное произведение testVector1 testVector2 = " + Vector.getScalarMultiplication(testVector1, testVector2));
+
+        testVector1.reverse();
+        System.out.println("Разворот вектора testVector1: " + testVector1);
+        testVector1.multiplyByScalar(2);
+        System.out.println("Умножение вектора testVector1 на 2: " + testVector1);
     }
 }
