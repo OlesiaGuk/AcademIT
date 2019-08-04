@@ -93,7 +93,7 @@ public class Vector {
             throw new IllegalArgumentException("Индекс должен быть >= 0");
         }
         if (index >= components.length) {
-            throw new ArrayIndexOutOfBoundsException("Введенный индекс превышает размерность вектора");
+            throw new IndexOutOfBoundsException("Введенный индекс превышает размерность вектора");
         }
 
         return components[index];
@@ -104,7 +104,7 @@ public class Vector {
             throw new IllegalArgumentException("Индекс должен быть >= 0");
         }
         if (index >= components.length) {
-            throw new ArrayIndexOutOfBoundsException("Введенный индекс превышает размерность вектора");
+            throw new IndexOutOfBoundsException("Введенный индекс превышает размерность вектора");
         }
 
         components[index] = newComponent;
