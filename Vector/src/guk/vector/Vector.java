@@ -9,6 +9,7 @@ public class Vector {
         if (n <= 0) {
             throw new IllegalArgumentException("Размерность вектора должны быть > 0");
         }
+
         components = new double[n];
     }
 
@@ -20,16 +21,16 @@ public class Vector {
         if (array.length == 0) {
             throw new IllegalArgumentException("Размерность вектора должны быть > 0");
         }
-        components = new double[array.length];
-        System.arraycopy(array, 0, components, 0, array.length);
+
+        components = Arrays.copyOf(array, array.length);
     }
 
     public Vector(int n, double[] array) {
         if (n <= 0) {
             throw new IllegalArgumentException("Размерность вектора должны быть > 0");
         }
-        components = new double[n];
-        System.arraycopy(array, 0, components, 0, array.length);
+
+        components = Arrays.copyOf(array, n);
     }
 
     public int getSize() {
@@ -50,23 +51,23 @@ public class Vector {
     public void add(Vector vector) {
         if (getSize() < vector.getSize()) {
             components = Arrays.copyOf(components, vector.getSize());
-        } else if (getSize() > vector.getSize()) {
-            vector.components = Arrays.copyOf(vector.components, getSize());
         }
-        for (int i = 0; i < getSize(); i++) {
+        int minSize = (getSize() < vector.getSize()) ? getSize() : vector.getSize();
+        for (int i = 0; i < minSize; i++) {
             components[i] += vector.components[i];
         }
+        System.arraycopy(vector.components, minSize, components, minSize, vector.getSize() - minSize);
     }
 
     public void subtract(Vector vector) {
         if (getSize() < vector.getSize()) {
             components = Arrays.copyOf(components, vector.getSize());
-        } else if (getSize() > vector.getSize()) {
-            vector.components = Arrays.copyOf(vector.components, getSize());
         }
-        for (int i = 0; i < getSize(); i++) {
+        int minSize = (getSize() < vector.getSize()) ? getSize() : vector.getSize();
+        for (int i = 0; i < minSize; i++) {
             components[i] -= vector.components[i];
         }
+        System.arraycopy(vector.components, minSize, components, minSize, vector.getSize() - minSize);
     }
 
     public void multiplyByScalar(double scalar) {
@@ -91,9 +92,10 @@ public class Vector {
         if (index < 0) {
             throw new IllegalArgumentException("Индекс должен быть >= 0");
         }
-        if (index > components.length) {
+        if (index >= components.length) {
             throw new ArrayIndexOutOfBoundsException("Введенный индекс превышает размерность вектора");
         }
+
         return components[index];
     }
 
@@ -101,11 +103,10 @@ public class Vector {
         if (index < 0) {
             throw new IllegalArgumentException("Индекс должен быть >= 0");
         }
-        if (index > components.length) {
+        if (index >= components.length) {
             throw new ArrayIndexOutOfBoundsException("Введенный индекс превышает размерность вектора");
         }
-        components = Arrays.copyOf(components, getSize() + 1);
-        System.arraycopy(components, index, components, index + 1, getSize() - index - 1);
+
         components[index] = newComponent;
     }
 
@@ -155,6 +156,7 @@ public class Vector {
         for (int i = 0; i < minArraySize; i++) {
             scalarMultiplication += vector1.components[i] * vector2.components[i];
         }
+
         return scalarMultiplication;
     }
 }

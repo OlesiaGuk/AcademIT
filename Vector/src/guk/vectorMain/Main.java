@@ -12,10 +12,11 @@ public class Main {
         System.out.println("Вектор vector = " + vector);
         System.out.println("Длина вектора vector = " + vector.getLength());
 
-        int index = 1;
+        int index = 0;
         System.out.printf("Компонента вектора vector по индексу %d = %.2f %n", index, vector.getComponentByIndex(index));
 
         System.out.println();
+        System.out.println("Вектор vector = " + vector);
         Vector vector1 = new Vector(new double[]{5, 10, 20});
         System.out.println("Вектор vector1 = " + vector1);
 
@@ -27,11 +28,13 @@ public class Main {
 
         System.out.println();
         Vector vector2 = new Vector(vector);
-        System.out.println("Копия вектора vector: " + vector2);
+        System.out.println("Вектор vector2 (копия vector): " + vector2);
         vector2.setComponentByIndex(10, 0);
         System.out.println("Установка компоненты 10 по индексу 0 в вектор vector2 = " + vector2);
 
         System.out.println();
+        System.out.println("vector = " + vector);
+        System.out.println("vector2 = " + vector2);
         System.out.println("Сумма векторов vector и vector2 = " + Vector.getSum(vector, vector2));
         System.out.println("Разность векторов vector и vector2 = " + Vector.getDifference(vector, vector2));
 
