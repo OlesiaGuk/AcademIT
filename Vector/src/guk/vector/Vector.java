@@ -49,25 +49,25 @@ public class Vector {
     }
 
     public void add(Vector vector) {
+        int minSize = Math.min(getSize(), vector.getSize());
         if (getSize() < vector.getSize()) {
             components = Arrays.copyOf(components, vector.getSize());
+            System.arraycopy(vector.components, minSize, components, minSize, vector.getSize() - minSize);
         }
-        int minSize = (getSize() < vector.getSize()) ? getSize() : vector.getSize();
         for (int i = 0; i < minSize; i++) {
             components[i] += vector.components[i];
         }
-        System.arraycopy(vector.components, minSize, components, minSize, vector.getSize() - minSize);
     }
 
     public void subtract(Vector vector) {
+        int minSize = Math.min(getSize(), vector.getSize());
         if (getSize() < vector.getSize()) {
             components = Arrays.copyOf(components, vector.getSize());
+            System.arraycopy(vector.components, minSize, components, minSize, vector.getSize() - minSize);
         }
-        int minSize = (getSize() < vector.getSize()) ? getSize() : vector.getSize();
         for (int i = 0; i < minSize; i++) {
             components[i] -= vector.components[i];
         }
-        System.arraycopy(vector.components, minSize, components, minSize, vector.getSize() - minSize);
     }
 
     public void multiplyByScalar(double scalar) {
@@ -90,7 +90,7 @@ public class Vector {
 
     public double getComponentByIndex(int index) {
         if (index < 0) {
-            throw new IllegalArgumentException("Индекс должен быть >= 0");
+            throw new IndexOutOfBoundsException("Индекс должен быть >= 0");
         }
         if (index >= components.length) {
             throw new IndexOutOfBoundsException("Введенный индекс превышает размерность вектора");
@@ -101,7 +101,7 @@ public class Vector {
 
     public void setComponentByIndex(double newComponent, int index) {
         if (index < 0) {
-            throw new IllegalArgumentException("Индекс должен быть >= 0");
+            throw new IndexOutOfBoundsException("Индекс должен быть >= 0");
         }
         if (index >= components.length) {
             throw new IndexOutOfBoundsException("Введенный индекс превышает размерность вектора");
