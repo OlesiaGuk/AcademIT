@@ -139,6 +139,11 @@ public class Matrix {
         }
     }
 
+    /*public void transpose(){
+        for(int i=0; i<getSize()[0];i++){
+        }
+    }*/
+
     public static Matrix getSum(Matrix matrix1, Matrix matrix2) {
         Matrix newMatrix = new Matrix(matrix1);
         newMatrix.add(matrix2);
@@ -151,6 +156,21 @@ public class Matrix {
         return newMatrix;
     }
 
+    public static Matrix getMultiplication(Matrix matrix1, Matrix matrix2) {
+        if (matrix1.getSize()[1] != matrix2.getSize()[0]) {
+            throw new IllegalArgumentException("Умножение невозможно: число столбцов первой матрицы не соответствует числу строк второй матрицы"); //todo: перепроверить тип исключения
+        }
+        double[][] array = new double[matrix2.getSize()[0]][matrix2.getSize()[1]];
+        for (int i = 0; i < array.length; i++) {
+            for (int j = 0; j < array[i].length; j++) {
+                array[i][j] = Vector.getScalarMultiplication(matrix1.getVectorByIndex(i), matrix2.getVectorColumnByIndex(j));
+            }
+        }
+        return new Matrix(array);
+    }
+
     //============================================================================================
+
+
 }
 

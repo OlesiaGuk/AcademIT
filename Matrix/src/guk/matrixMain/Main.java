@@ -13,9 +13,15 @@ public class Main {
         double[][] array = new double[][]{{1, 2, 3}, {4, 5, 6, 7}};
         Matrix matrix2 = new Matrix(array);
         System.out.println("Матрица matrix2 = " + matrix2);
+        System.out.println("Размер матрицы matrix2 = " + Arrays.toString(matrix2.getSize()));
 
         Matrix matrix2Copy = new Matrix(matrix2);
         System.out.println("Копия матрицы matrix2 = " + matrix2Copy);
+
+        System.out.println();
+        int index2 = 0;
+        matrix2Copy.setVectorByIndex(index2, new Vector(4, new double[]{20, 21}));
+        System.out.println("Установка вектора-строки {20, 21} по индексу " + index2 + " в матрицу matrix2Copy = " + matrix2Copy);
 
         System.out.println();
         Vector[] vector = new Vector[]{new Vector(new double[]{7, 8}), new Vector(new double[]{9, 10, 11})};
@@ -26,11 +32,39 @@ public class Main {
         System.out.println("Вектор под индексом " + index + " матрицы matrix3 = " + matrix3.getVectorByIndex(index));
 
         int index3 = 2;
-        System.out.println(matrix3.getVectorColumnByIndex(index3));
+        System.out.println("Вектор-столбец из матрицы matrix3 по индексу " + index3 + " = " + matrix3.getVectorColumnByIndex(index3));
 
-        int index2 = 0;
-        matrix2Copy.setVectorByIndex(index2, new Vector(2, new double[]{20, 21}));
-        System.out.println("Установка вектора-строки {20, 21} по индексу " + index2 + " в матрицу matrix2Copy = " + matrix2Copy);
+        matrix3.multiplyByScalar(2);
+        System.out.println("Умножение матрицы matrix3 на скаляр 2 = " + matrix3);
+
+        System.out.println();
+        Matrix matrix4 = new Matrix(new Vector[]{new Vector(new double[]{1, 2, 3}), new Vector(new double[]{4, 5, 6})});
+        System.out.println("matrix4 = " + matrix4);
+
+        matrix3.add(matrix4);
+        System.out.println("Сумма матриц matrix3 и matrix4 = " + matrix3);
+
+        matrix3.subtract(matrix4);
+        System.out.println("Разность матриц matrix3 и matrix4 = " + matrix3);
+
+        System.out.println();
+        System.out.println(matrix3);
+        System.out.println(matrix4);
+        System.out.println("Сумма матриц matrix3 и matrix4 (стат.метод) = " + Matrix.getSum(matrix3, matrix4));
+        System.out.println("Разность матриц matrix3 и matrix4 (стат.метод) = " + Matrix.getDifference(matrix3, matrix4));
+
+        System.out.println();
+        Vector vector1 = new Vector(new double[]{5, 8, -4});
+        Vector vector2 = new Vector(new double[]{6, 9, -5});
+        Vector vector3 = new Vector(new double[]{4, 7, -3});
+        Matrix testMatrix1 = new Matrix(new Vector[]{vector1, vector2, vector3});
+
+        Vector vector4 = new Vector(new double[]{3, 2, 5});
+        Vector vector5 = new Vector(new double[]{4, -1, 3});
+        Vector vector6 = new Vector(new double[]{9, 6, 5});
+        Matrix testMatrix2 = new Matrix(new Vector[]{vector4, vector5, vector6});
+
+        System.out.println("Умножение матриц: "+Matrix.getMultiplication(testMatrix1, testMatrix2));
 
     }
 }
