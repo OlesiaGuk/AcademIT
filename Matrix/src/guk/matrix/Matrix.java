@@ -139,10 +139,13 @@ public class Matrix {
         }
     }
 
-    /*public void transpose(){
-        for(int i=0; i<getSize()[0];i++){
+    public void transpose() {
+        Matrix newMatrix = new Matrix(getSize()[1], getSize()[0]);
+        for (int i = 0; i < getSize()[1]; i++) {
+            newMatrix.setVectorByIndex(i, getVectorColumnByIndex(i));
         }
-    }*/
+        this.matrixElements = newMatrix.matrixElements;
+    }
 
     public static Matrix getSum(Matrix matrix1, Matrix matrix2) {
         Matrix newMatrix = new Matrix(matrix1);
@@ -158,7 +161,7 @@ public class Matrix {
 
     public static Matrix getMultiplication(Matrix matrix1, Matrix matrix2) {
         if (matrix1.getSize()[1] != matrix2.getSize()[0]) {
-            throw new IllegalArgumentException("Умножение невозможно: число столбцов первой матрицы не соответствует числу строк второй матрицы"); //todo: перепроверить тип исключения
+            throw new IllegalArgumentException("Умножение невозможно: число столбцов первой матрицы не соответствует числу строк второй матрицы");
         }
         double[][] array = new double[matrix2.getSize()[0]][matrix2.getSize()[1]];
         for (int i = 0; i < array.length; i++) {
@@ -168,8 +171,6 @@ public class Matrix {
         }
         return new Matrix(array);
     }
-
-    //============================================================================================
 
 
 }

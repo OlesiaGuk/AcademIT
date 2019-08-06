@@ -64,7 +64,14 @@ public class Main {
         Vector vector6 = new Vector(new double[]{9, 6, 5});
         Matrix testMatrix2 = new Matrix(new Vector[]{vector4, vector5, vector6});
 
-        System.out.println("Умножение матриц: "+Matrix.getMultiplication(testMatrix1, testMatrix2));
+        System.out.println("Умножение матриц: " + Matrix.getMultiplication(testMatrix1, testMatrix2));
 
+        System.out.println();
+        double[][] array2 = new double[][]{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+        //double[][] array2 = new double[][]{{1, 2, 3}, {4, 5, 6}};
+        Matrix testMatrix3 = new Matrix(array2);
+        System.out.println("testMatrix3 = " + testMatrix3);
+        testMatrix3.transpose();
+        System.out.println("Транспонированная матрица testMatrix3 = " + testMatrix3);
     }
 }
