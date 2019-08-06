@@ -48,8 +48,8 @@ public class Main {
         System.out.println("Разность матриц matrix3 и matrix4 = " + matrix3);
 
         System.out.println();
-        System.out.println(matrix3);
-        System.out.println(matrix4);
+        System.out.println("matrix3 = " + matrix3);
+        System.out.println("matrix3 = " + matrix4);
         System.out.println("Сумма матриц matrix3 и matrix4 (стат.метод) = " + Matrix.getSum(matrix3, matrix4));
         System.out.println("Разность матриц matrix3 и matrix4 (стат.метод) = " + Matrix.getDifference(matrix3, matrix4));
 
@@ -64,14 +64,35 @@ public class Main {
         Vector vector6 = new Vector(new double[]{9, 6, 5});
         Matrix testMatrix2 = new Matrix(new Vector[]{vector4, vector5, vector6});
 
+        System.out.println("testMatrix1 = " + testMatrix1);
+        System.out.println("testMatrix2 = " + testMatrix2);
         System.out.println("Умножение матриц: " + Matrix.getMultiplication(testMatrix1, testMatrix2));
 
         System.out.println();
-        double[][] array2 = new double[][]{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
-        //double[][] array2 = new double[][]{{1, 2, 3}, {4, 5, 6}};
+        double[][] array2 = new double[][]{{1, 2, 3}, {4, 5, 6}};
         Matrix testMatrix3 = new Matrix(array2);
         System.out.println("testMatrix3 = " + testMatrix3);
         testMatrix3.transpose();
         System.out.println("Транспонированная матрица testMatrix3 = " + testMatrix3);
+
+        System.out.println();
+        Vector vector7 = new Vector(new double[]{2, 4, 0});
+        Vector vector8 = new Vector(new double[]{-2, 1, 3});
+        Vector vector9 = new Vector(new double[]{-1, 0, 1});
+        Matrix testMatrix4 = new Matrix(new Vector[]{vector7, vector8, vector9});
+        System.out.println("Матрица testMatrix4 = " + testMatrix4);
+
+        Vector vector10 = new Vector(new double[]{1, 2, -1});
+        System.out.println("Вектор vector10 = " + vector10);
+
+        System.out.println("Умножение матрицы testMatrix4 на вектор vector10: " + testMatrix4.multiplyByVectorColumn(vector10));
+
+        System.out.println();
+        double[][] array3 = {{4, 1, 1, 2, 1}, {1, 2, -1, 1, 1}, {3, 1, 1, 1, 1}, {2, 1, 1, 4, 1}, {2, -1, 1, 1, 5}};
+        //double[][] array3 = {{101.8}};
+        Matrix matrix5 = new Matrix(array3);
+        System.out.println("matrix5 = " + matrix5);
+        System.out.println("Определитель матрицы matrix5 = " + matrix5.getDeterminant());
+
     }
 }

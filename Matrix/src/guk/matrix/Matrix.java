@@ -147,6 +147,53 @@ public class Matrix {
         this.matrixElements = newMatrix.matrixElements;
     }
 
+    public Vector multiplyByVectorColumn(Vector vector) {
+        if (getSize()[1] != vector.getSize()) {
+            throw new IllegalArgumentException("Число столбцов матрицы не соответствует размерности вектора-столбца");
+        }
+        double[] array = new double[getSize()[0]];
+        for (int i = 0; i < array.length; i++) {
+            array[i] = Vector.getScalarMultiplication(getVectorByIndex(i), vector);
+        }
+        return new Vector(array);
+    }
+
+    public double getDeterminant() {
+        if (getSize()[0] != getSize()[1]) {
+            throw new IllegalArgumentException("Число строк в матрице не равно числу столбцов!"); //Определитель можно вычислить только для квадратной матрицы
+        }
+
+        int matrixSize = getSize()[0];
+        if (matrixSize == 1) {
+            return matrixElements[0].getComponentByIndex(0);
+        }
+        if (matrixSize == 2) {
+            return matrixElements[0].getComponentByIndex(0) * matrixElements[1].getComponentByIndex(1) - matrixElements[1].getComponentByIndex(0) * matrixElements[0].getComponentByIndex(1);
+        }
+
+        double determinant = 0;
+        int decompositionLineNumber = 0;
+        for (int j = 0; j < matrixSize; j++) {
+            double element = matrixElements[decompositionLineNumber].getComponentByIndex(j);
+            double[][] extraMinor = new double[matrixSize - 1][matrixSize - 1];
+
+            for (int x = 0, k = 0; k < extraMinor.length; x++, k++) {
+                for (int y = 0, m = 0; m < extraMinor.length; y++, m++) {
+                    if (x == decompositionLineNumber) {
+                        x++;
+                    }
+                    if (y == j) {
+                        y++;
+                    }
+                    extraMinor[k][m] = matrixElements[x].getComponentByIndex(y);
+                }
+            }
+            Matrix extraMinorMatrix = new Matrix(extraMinor);
+            determinant += Math.pow(-1, j) * element * extraMinorMatrix.getDeterminant();
+        }
+        return determinant;
+    }
+
     public static Matrix getSum(Matrix matrix1, Matrix matrix2) {
         Matrix newMatrix = new Matrix(matrix1);
         newMatrix.add(matrix2);
@@ -161,9 +208,9 @@ public class Matrix {
 
     public static Matrix getMultiplication(Matrix matrix1, Matrix matrix2) {
         if (matrix1.getSize()[1] != matrix2.getSize()[0]) {
-            throw new IllegalArgumentException("Умножение невозможно: число столбцов первой матрицы не соответствует числу строк второй матрицы");
+            throw new IllegalArgumentException("Число столбцов первой матрицы не соответствует числу строк второй матрицы");
         }
-        double[][] array = new double[matrix2.getSize()[0]][matrix2.getSize()[1]];
+        double[][] array = new double[matrix1.getSize()[0]][matrix2.getSize()[1]];
         for (int i = 0; i < array.length; i++) {
             for (int j = 0; j < array[i].length; j++) {
                 array[i][j] = Vector.getScalarMultiplication(matrix1.getVectorByIndex(i), matrix2.getVectorColumnByIndex(j));
