@@ -3,17 +3,15 @@ package guk.matrixMain;
 import guk.matrix.Matrix;
 import guk.vector.Vector;
 
-import java.util.Arrays;
-
 public class Main {
     public static void main(String[] args) {
         Matrix matrix = new Matrix(2, 3);
-        System.out.println("Матрица нулей matrix размера " + Arrays.toString(matrix.getSize()) + " = " + matrix);
+        System.out.println("Матрица нулей matrix размера " + matrix.getRowsAmount() + " x " + matrix.getColumnsAmount() + " = " + matrix);
 
         double[][] array = new double[][]{{1, 2, 3}, {4, 5, 6, 7}};
         Matrix matrix2 = new Matrix(array);
         System.out.println("Матрица matrix2 = " + matrix2);
-        System.out.println("Размер матрицы matrix2 = " + Arrays.toString(matrix2.getSize()));
+        System.out.println("Размер матрицы matrix2 = " + matrix2.getRowsAmount() + " x " + matrix2.getColumnsAmount());
 
         Matrix matrix2Copy = new Matrix(matrix2);
         System.out.println("Копия матрицы matrix2 = " + matrix2Copy);
@@ -29,7 +27,7 @@ public class Main {
         System.out.println("Матрица matrix3 = " + matrix3);
 
         int index = 1;
-        System.out.println("Вектор под индексом " + index + " матрицы matrix3 = " + matrix3.getVectorByIndex(index));
+        System.out.println("Вектор под индексом " + index + " матрицы matrix3 = " + matrix3.getRowByIndex(index));
 
         int index3 = 2;
         System.out.println("Вектор-столбец из матрицы matrix3 по индексу " + index3 + " = " + matrix3.getVectorColumnByIndex(index3));
@@ -89,7 +87,6 @@ public class Main {
 
         System.out.println();
         double[][] array3 = {{4, 1, 1, 2, 1}, {1, 2, -1, 1, 1}, {3, 1, 1, 1, 1}, {2, 1, 1, 4, 1}, {2, -1, 1, 1, 5}};
-        //double[][] array3 = {{101.8}};
         Matrix matrix5 = new Matrix(array3);
         System.out.println("matrix5 = " + matrix5);
         System.out.println("Определитель матрицы matrix5 = " + matrix5.getDeterminant());
