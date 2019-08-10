@@ -6,13 +6,17 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) {
         ArrayList<Integer> list = new ArrayList<>();
 
         try (Scanner scanner = new Scanner(new FileInputStream("./ArrayListHome/src/guk/1.txt"))) {
             while (scanner.hasNext()) {
                 list.add(scanner.nextInt());
             }
+        } catch (FileNotFoundException e) {
+            System.out.println("Файл не найден: " + e.getMessage());
+        } catch (SecurityException e) {
+            System.out.println("Доступ к файлу запрещен: " + e.getMessage());
         }
         System.out.println("Исходный список: " + list);
 
