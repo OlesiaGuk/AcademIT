@@ -148,11 +148,22 @@ public class Matrix {
     }
 
     public void transpose() {
-        Matrix newMatrix = new Matrix(getColumnsAmount(), getRowsAmount());
-        for (int i = 0; i < getColumnsAmount(); i++) {
-            newMatrix.setVectorByIndex(i, getVectorColumnByIndex(i));
+        if (getRowsAmount() == getColumnsAmount()) {
+            for (int i = 0; i < getRowsAmount(); i++) {
+                for (int j = i + 1; j < getColumnsAmount(); j++) {
+                    double temp = elementsTable[i].getComponentByIndex(j);
+                    elementsTable[i].setComponentByIndex(elementsTable[j].getComponentByIndex(i), j);
+                    elementsTable[j].setComponentByIndex(temp, i);
+                }
+            }
+        } else {
+            Vector[] newArray = new Vector[getColumnsAmount()];
+
+            for (int j = 0; j < getColumnsAmount(); j++) {
+                newArray[j] = getVectorColumnByIndex(j);
+            }
+            elementsTable = newArray;
         }
-        this.elementsTable = newMatrix.elementsTable;
     }
 
     public Vector multiplyByVectorColumn(Vector vector) {
