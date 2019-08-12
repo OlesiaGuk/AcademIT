@@ -48,12 +48,12 @@ public class Vector {
         return s.toString();
     }
 
-    public void add(Vector vector) {
+    public void add(Vector vector) { //!!!аргумент не должен меняться
         if (getSize() < vector.getSize()) {
             components = Arrays.copyOf(components, vector.getSize());
         }
-        int maxSize = Math.max(getSize(), vector.getSize());
-        for (int i = 0; i < maxSize; i++) {
+        int minSize = Math.min(getSize(), vector.getSize());
+        for (int i = 0; i < minSize; i++) {
             components[i] += vector.components[i];
         }
     }
@@ -62,8 +62,8 @@ public class Vector {
         if (getSize() < vector.getSize()) {
             components = Arrays.copyOf(components, vector.getSize());
         }
-        int maxSize = Math.max(getSize(), vector.getSize());
-        for (int i = 0; i < maxSize; i++) {
+        int minSize = Math.min(getSize(), vector.getSize());
+        for (int i = 0; i < minSize; i++) {
             components[i] -= vector.components[i];
         }
     }
