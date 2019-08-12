@@ -7,7 +7,7 @@ public class Vector {
 
     public Vector(int n) {
         if (n <= 0) {
-            throw new IllegalArgumentException("Размерность вектора должны быть > 0");
+            throw new IllegalArgumentException("Размерность вектора должна быть > 0");
         }
 
         components = new double[n];
@@ -19,7 +19,7 @@ public class Vector {
 
     public Vector(double[] array) {
         if (array.length == 0) {
-            throw new IllegalArgumentException("Размерность вектора должны быть > 0");
+            throw new IllegalArgumentException("Размерность вектора должна быть > 0");
         }
 
         components = Arrays.copyOf(array, array.length);
@@ -27,7 +27,7 @@ public class Vector {
 
     public Vector(int n, double[] array) {
         if (n <= 0) {
-            throw new IllegalArgumentException("Размерность вектора должны быть > 0");
+            throw new IllegalArgumentException("Размерность вектора должна быть > 0");
         }
 
         components = Arrays.copyOf(array, n);
@@ -49,23 +49,21 @@ public class Vector {
     }
 
     public void add(Vector vector) {
-        int minSize = Math.min(getSize(), vector.getSize());
         if (getSize() < vector.getSize()) {
             components = Arrays.copyOf(components, vector.getSize());
-            System.arraycopy(vector.components, minSize, components, minSize, vector.getSize() - minSize);
         }
-        for (int i = 0; i < minSize; i++) {
+        int maxSize = Math.max(getSize(), vector.getSize());
+        for (int i = 0; i < maxSize; i++) {
             components[i] += vector.components[i];
         }
     }
 
     public void subtract(Vector vector) {
-        int minSize = Math.min(getSize(), vector.getSize());
         if (getSize() < vector.getSize()) {
             components = Arrays.copyOf(components, vector.getSize());
-            System.arraycopy(vector.components, minSize, components, minSize, vector.getSize() - minSize);
         }
-        for (int i = 0; i < minSize; i++) {
+        int maxSize = Math.max(getSize(), vector.getSize());
+        for (int i = 0; i < maxSize; i++) {
             components[i] -= vector.components[i];
         }
     }
