@@ -18,7 +18,7 @@ public class Main {
 
         System.out.println();
         int index2 = 0;
-        matrix2Copy.setVectorByIndex(index2, new Vector(4, new double[]{20, 21}));
+        matrix2Copy.setRowByIndex(index2, new Vector(4, new double[]{20, 21}));
         System.out.println("Установка вектора-строки {20, 21} по индексу " + index2 + " в матрицу matrix2Copy = " + matrix2Copy);
 
         System.out.println();
@@ -90,6 +90,5 @@ public class Main {
         Matrix matrix5 = new Matrix(array3);
         System.out.println("matrix5 = " + matrix5);
         System.out.println("Определитель матрицы matrix5 = " + matrix5.getDeterminant());
-
     }
 }

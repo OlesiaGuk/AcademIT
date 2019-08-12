@@ -94,7 +94,7 @@ public class Matrix {
         return new Vector(elementsTable[index]);
     }
 
-    public void setVectorByIndex(int index, Vector newVector) {
+    public void setRowByIndex(int index, Vector newVector) {
         if (index >= elementsTable.length) {
             throw new IndexOutOfBoundsException("Индекс должен быть < " + elementsTable.length);
         }
