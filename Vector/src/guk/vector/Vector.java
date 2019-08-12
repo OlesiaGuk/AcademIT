@@ -48,7 +48,7 @@ public class Vector {
         return s.toString();
     }
 
-    public void add(Vector vector) { //!!!аргумент не должен меняться
+    public void add(Vector vector) {
         if (getSize() < vector.getSize()) {
             components = Arrays.copyOf(components, vector.getSize());
         }
