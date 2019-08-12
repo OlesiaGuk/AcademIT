@@ -17,6 +17,8 @@ public class Main {
             System.out.println("Файл не найден: " + e.getMessage());
         } catch (SecurityException e) {
             System.out.println("Доступ к файлу запрещен: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Ошибка при работе в файлом: " + e.getMessage());
         }
         System.out.println("Исходный список: " + list);
 
