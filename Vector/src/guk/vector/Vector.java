@@ -52,8 +52,7 @@ public class Vector {
         if (getSize() < vector.getSize()) {
             components = Arrays.copyOf(components, vector.getSize());
         }
-        int minSize = Math.min(getSize(), vector.getSize());
-        for (int i = 0; i < minSize; i++) {
+        for (int i = 0; i < vector.getSize(); i++) {
             components[i] += vector.components[i];
         }
     }
@@ -62,8 +61,7 @@ public class Vector {
         if (getSize() < vector.getSize()) {
             components = Arrays.copyOf(components, vector.getSize());
         }
-        int minSize = Math.min(getSize(), vector.getSize());
-        for (int i = 0; i < minSize; i++) {
+        for (int i = 0; i < vector.getSize(); i++) {
             components[i] -= vector.components[i];
         }
     }
@@ -116,10 +114,12 @@ public class Vector {
         if (o == null || o.getClass() != this.getClass()) {
             return false;
         }
+
         Vector vector = (Vector) o;
         if (getSize() != vector.getSize()) {
             return false;
         }
+
         for (int i = 0; i < getSize(); i++) {
             if (components[i] != vector.components[i]) {
                 return false;
