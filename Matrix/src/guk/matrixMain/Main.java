@@ -30,7 +30,7 @@ public class Main {
         System.out.println("Вектор под индексом " + index + " матрицы matrix3 = " + matrix3.getRowByIndex(index));
 
         int index3 = 2;
-        System.out.println("Вектор-столбец из матрицы matrix3 по индексу " + index3 + " = " + matrix3.getVectorColumnByIndex(index3));
+        System.out.println("Вектор-столбец из матрицы matrix3 по индексу " + index3 + " = " + matrix3.getColumnByIndex(index3));
 
         matrix3.multiplyByScalar(2);
         System.out.println("Умножение матрицы matrix3 на скаляр 2 = " + matrix3);
