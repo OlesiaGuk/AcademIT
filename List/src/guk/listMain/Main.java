@@ -8,9 +8,9 @@ public class Main {
         ListItem<Integer> item1 = new ListItem<>(2);
         SinglyLinkedList<Integer> list = new SinglyLinkedList<>(item1);
 
-        list.addToEnd(3);
         list.addToStart(1);
-        list.addByIndex(0, 2);
+        list.addByIndex(0, 0);
+        list.addByIndex(3, 3);
         System.out.println("Список list: " + list);
 
         int index1 = 3;
@@ -41,8 +41,8 @@ public class Main {
         System.out.println("Из списка list удален первый элемент со значением " + list.deleteFirstItem());
         System.out.println("Список list: " + list);
 
-        list.addByIndex(0, 0);
-        System.out.println("В list добавлен элемент по индексу 0: " + list);
+        list.addByIndex(10, 1);
+        System.out.println("В list добавлен элемент по индексу 1: " + list);
 
         System.out.println();
         SinglyLinkedList<Integer> list2 = list.copy();

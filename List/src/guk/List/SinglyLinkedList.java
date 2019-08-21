@@ -14,7 +14,21 @@ public class SinglyLinkedList<T> {
     }
 
     public T getHeadData() {
+        if (count == 0) {
+            throw new IllegalArgumentException("Список пустой");
+        }
+
         return head.getData();
+    }
+
+    private ListItem<T> getPointerByIndex(int index) {
+        ListItem<T> p = head;
+        int i = 0;
+        while (i < index) {
+            p = p.getNext();
+            i++;
+        }
+        return p;
     }
 
     public T getDataByIndex(int index) {
@@ -25,13 +39,7 @@ public class SinglyLinkedList<T> {
             throw new IndexOutOfBoundsException("Индекс превышает размер списка");
         }
 
-        ListItem<T> p = head;
-        int i = 0;
-        while (i < index) {
-            p = p.getNext();
-            i++;
-        }
-        return p.getData();
+        return getPointerByIndex(index).getData();
     }
 
     public T setDataByIndex(T data, int index) {
@@ -42,18 +50,17 @@ public class SinglyLinkedList<T> {
             throw new IndexOutOfBoundsException("Индекс превышает размер списка");
         }
 
-        ListItem<T> p = head;
-        int i = 0;
-        while (i < index) {
-            p = p.getNext();
-            i++;
-        }
+        ListItem<T> p = getPointerByIndex(index);
         T oldData = p.getData();
         p.setData(data);
         return oldData;
     }
 
     public T deleteFirstItem() {
+        if (count == 0) {
+            throw new IllegalArgumentException("Список пустой");
+        }
+
         ListItem<T> p = head;
         head = head.getNext();
         count--;
@@ -71,17 +78,9 @@ public class SinglyLinkedList<T> {
         if (index == 0) {
             return deleteFirstItem();
         } else {
-            ListItem<T> p = head;
-            ListItem<T> prev = null;
-
-            int i = 0;
-            while (i < index) {
-                prev = p;
-                p = p.getNext();
-                i++;
-            }
+            ListItem<T> prev = getPointerByIndex(index - 1);
+            ListItem<T> p = prev.getNext();
             prev.setNext(p.getNext());
-
             count--;
             return p.getData();
         }
@@ -102,29 +101,21 @@ public class SinglyLinkedList<T> {
 
         if (index == 0) {
             addToStart(data);
-        } else if (index == count) {
-            addToEnd(data);
         } else {
-            ListItem<T> p = head;
-            ListItem<T> prev = null;
+            ListItem<T> prev = getPointerByIndex(index - 1);
 
-            int i = 0;
-            while (i < index) {
-                prev = p;
-                p = p.getNext();
-                i++;
-            }
-
-            ListItem<T> q = new ListItem<>(data, p.getNext());
-            q.setNext(prev.getNext());
+            ListItem<T> q = new ListItem<>(data, prev.getNext());
             prev.setNext(q);
             count++;
         }
     }
 
     public boolean deleteItemByData(T data) {
+        if (count == 0) {
+            return false;
+        }
         for (ListItem<T> p = head, prev = null; p != null; prev = p, p = p.getNext()) {
-            if (p.getData() == data) {
+            if (data == null ? p.getData() == null : data.equals(p.getData())) {
                 if (prev == null) {
                     head = p.getNext();
                     count--;
@@ -144,37 +135,25 @@ public class SinglyLinkedList<T> {
     }
 
     public SinglyLinkedList<T> copy() {
-        ListItem<T> p = head;
-        SinglyLinkedList<T> copy = new SinglyLinkedList<>(new ListItem<>(p.getData(), null));
-        for (p = head.getNext(); p != null; p = p.getNext()) {
-            copy.addToEnd(p.getData());
+        if (count == 0) {
+            throw new IllegalArgumentException("Список пустой");
+        }
+
+        SinglyLinkedList<T> copy = new SinglyLinkedList<>(new ListItem<>(getHeadData(), null));
+        for (ListItem<T> p = head.getNext(), q = copy.head; p != null; p = p.getNext()) {
+            ListItem<T> newItem = new ListItem<>(p.getData(), null);
+            q.setNext(newItem);
+            q = newItem;
+            copy.count++;
         }
         return copy;
     }
 
-    public void addToEnd(T data) {
-        ListItem<T> p = head;
-        ListItem<T> newItem = new ListItem<>(data, null);
-
-        if (p == null) {
-            head = newItem;
-            count++;
-        } else if (p.getNext() == null) {
-            p.setNext(newItem);
-            count++;
-        } else {
-            ListItem<T> prev = null;
-
-            while (p != null) {
-                prev = p;
-                p = p.getNext();
-            }
-            prev.setNext(newItem);
-            count++;
-        }
-    }
-
     public void reverse() {
+        if (count == 0) {
+            throw new IllegalArgumentException("Список пустой");
+        }
+
         for (ListItem<T> p = head, q = p.getNext(), prev = null; ; q = q.getNext()) {
             p.setNext(prev);
             if (q == null) {
