@@ -72,6 +72,7 @@ public class SinglyLinkedList<T> {
         if (index == 0) {
             return deleteFirstItem();
         }
+
         ListItem<T> prev = getListItemByIndex(index - 1);
         ListItem<T> p = prev.getNext();
         prev.setNext(p.getNext());
