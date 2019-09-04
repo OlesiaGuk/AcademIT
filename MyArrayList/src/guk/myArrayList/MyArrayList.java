@@ -8,6 +8,10 @@ public class MyArrayList<E> implements List<E> {
     private int modCount;
 
     public MyArrayList(int capacity) {
+        if (capacity <= 0) {
+            throw new IllegalArgumentException("Вместимость массива должна быть >= 0");
+        }
+
         //noinspection unchecked
         items = (E[]) new Object[capacity];
     }
@@ -50,12 +54,7 @@ public class MyArrayList<E> implements List<E> {
         if (requiredCapacity <= items.length) {
             return;
         }
-        items = Arrays.copyOf(items, items.length * 2);
-
-        if (items.length >= requiredCapacity) {
-            return;
-        }
-        ensureCapacity(requiredCapacity);//на случай, если емкость списка увеличена недостаточно
+        items = Arrays.copyOf(items, requiredCapacity);
     }
 
     @Override
@@ -77,7 +76,6 @@ public class MyArrayList<E> implements List<E> {
     @Override
     public boolean add(E e) { //вставка в конец списка
         add(size, e);
-        modCount++;
         return true;
     }
 
@@ -92,7 +90,7 @@ public class MyArrayList<E> implements List<E> {
         public E next() {
             checkModCount();
 
-            if (currentIndex + 1 >= size) {
+            if (!hasNext()) {
                 throw new NoSuchElementException("В коллекции больше нет элементов");
             }
 
@@ -114,12 +112,7 @@ public class MyArrayList<E> implements List<E> {
 
     @Override
     public boolean contains(Object o) {//проверяет, есть ли в списке указанный элемент
-        for (E e : items) {
-            if (Objects.equals(e, o)) {
-                return true;
-            }
-        }
-        return false;
+        return indexOf(o) != -1;
     }
 
     @Override
@@ -137,12 +130,14 @@ public class MyArrayList<E> implements List<E> {
 
     @Override
     public boolean remove(Object o) {
+        int currentModCount = modCount;
         int index = indexOf(o);
+
         if (index >= 0) {
             remove(index);
         }
-        modCount++;
-        return false;
+
+        return currentModCount != modCount;
     }
 
     @Override
@@ -181,17 +176,18 @@ public class MyArrayList<E> implements List<E> {
 
     @Override
     public boolean addAll(Collection<? extends E> c) { //добавляет в конец все элементы из переданной коллекции
-        Object[] addedArray = c.toArray();
-        int addedArraySize = addedArray.length;
-
-        if (addedArraySize == 0) {
+        int addedCollectionSize = c.size();
+        if (addedCollectionSize == 0) {
             return false;
         }
+        ensureCapacity(size + addedCollectionSize);
 
-        ensureCapacity(size + addedArraySize);
-        System.arraycopy((E[]) addedArray, 0, items, size, addedArraySize);
-        size += addedArraySize;
-        modCount++;
+        for (E e : c) {
+            items[size] = e;
+            size++;
+            modCount++;
+        }
+
         return true;
     }
 
@@ -204,18 +200,20 @@ public class MyArrayList<E> implements List<E> {
             throw new IndexOutOfBoundsException("Значение индекса превышает количество элементов в списке");
         }
 
-        Object[] addedArray = c.toArray();
-        int addedArraySize = addedArray.length;
-
-        if (addedArraySize == 0) {
+        int addedCollectionSize = c.size();
+        if (addedCollectionSize == 0) {
             return false;
         }
+        ensureCapacity(size + addedCollectionSize);
+        System.arraycopy(items, index, items, index + addedCollectionSize, size - index);
 
-        ensureCapacity(size + addedArraySize);
-        System.arraycopy(items, index, items, index + addedArraySize, size - index);
-        System.arraycopy((E[]) addedArray, 0, items, index, addedArraySize);
-        size += addedArraySize;
-        modCount++;
+        for (E e : c) {
+            items[index] = e;
+            index++;
+            modCount++;
+        }
+
+        size += addedCollectionSize;
         return true;
     }
 
@@ -225,13 +223,13 @@ public class MyArrayList<E> implements List<E> {
             return (T[]) Arrays.copyOf(items, size, a.getClass());
         }
         System.arraycopy(items, 0, a, 0, size);
+        if (a.length > size) {
+            a[size] = null;
+        }
         return a;
     }
 
     private void trimToSize() {
-        if (items.length == size) {
-            return;
-        }
         if (items.length > size) {
             items = Arrays.copyOf(items, size);
         }
@@ -239,8 +237,7 @@ public class MyArrayList<E> implements List<E> {
 
     @Override
     public boolean containsAll(Collection<?> c) {
-        Object[] checkingArray = c.toArray();
-        for (Object e : checkingArray) {
+        for (Object e : c) {
             if (!contains(e)) {
                 return false;
             }
@@ -251,9 +248,9 @@ public class MyArrayList<E> implements List<E> {
     @Override
     public boolean removeAll(Collection<?> c) { //удаление всех элементов списка, которые есть в указанной коллекции
         int currentModCount = modCount;
-        trimToSize();
-        for (E e : items) {
-            if (c.contains(e)) {
+
+        for (Object e : c) {
+            if (contains(e)) {
                 remove(e);
             }
         }
@@ -264,10 +261,10 @@ public class MyArrayList<E> implements List<E> {
     @Override
     public boolean retainAll(Collection<?> c) {
         int currentModCount = modCount;
-        trimToSize();
-        for (E e : items) {
-            if (!c.contains(e)) {
-                remove(e);
+
+        for (int i = size - 1; i >= 0; i--) {
+            if (!c.contains(items[i])) {
+                remove(i);
             }
         }
 

@@ -25,13 +25,16 @@ public class Main {
 
         System.out.println(arrayList.contains(50));
 
-        arrayList.remove(Integer.valueOf(1));
+        System.out.println(arrayList.remove(Integer.valueOf(10)));
         System.out.println("Список arrayList: " + arrayList);
 
-        Integer[] a = new Integer[]{50, 30};
+        Integer[] a = new Integer[]{5, 6, 55, 70, 80, 90, 100, 200, 300, 500};
         LinkedList<Integer> linkedList = new LinkedList<>(Arrays.asList(a));
 
-        System.out.println(arrayList.removeAll(linkedList));
+        System.out.println(arrayList.retainAll(linkedList));
         System.out.println("Список arrayList: " + arrayList);
+
+        int value = 1;
+        System.out.println("Список содержит " + value + "? " + arrayList.contains(value));
     }
 }
