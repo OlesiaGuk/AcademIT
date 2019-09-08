@@ -13,13 +13,6 @@ public class Tree<T extends Comparable<T>> {
         size++;
     }
 
-    public T getRootData() {
-        if (size == 0) {
-            throw new IllegalArgumentException("В дереве нет элементов");
-        }
-        return root.getData();
-    }
-
     public int size() {
         return size;
     }
@@ -35,6 +28,7 @@ public class Tree<T extends Comparable<T>> {
             TreeNode<T> element = stack.pollLast();
 
             try {
+                //NullPointerException возникает, если был удален единственный элемент дерева - корень
                 s.append(element.getData()).append("  ");
                 if (element.getRight() != null) {
                     stack.addLast(element.getRight());
@@ -92,139 +86,104 @@ public class Tree<T extends Comparable<T>> {
         }
     }
 
-    public boolean deleteNode(T value) {//todo: стр.196
-        TreeNode<T> foundNode = null;
-        TreeNode<T> parentNode = null;
+    public boolean deleteNode(T value) {
+        TreeNode<T> deleteNode = null;
+        TreeNode<T> deleteNodeParent = null;
 
         //ищем узел с заданным значением, а также его родителя
         for (TreeNode<T> currentNode = root; ; ) {
             if (value.compareTo(currentNode.getData()) == 0) {
-                foundNode = currentNode;
+                deleteNode = currentNode;
                 break;
             }
             if (value.compareTo(currentNode.getData()) < 0) {
                 if (currentNode.getLeft() != null) {
-                    parentNode = currentNode;
+                    deleteNodeParent = currentNode;
                     currentNode = currentNode.getLeft();
                     continue;
                 }
                 break;
             }
             if (currentNode.getRight() != null) {
-                parentNode = currentNode;
+                deleteNodeParent = currentNode;
                 currentNode = currentNode.getRight();
                 continue;
             }
             break;
         }
 
-        // если узел с искомым значением есть в дереве
-        if (foundNode != null) {
+        if (deleteNode != null) {
             // если удаляем лист
-            if (foundNode.getLeft() == null && foundNode.getRight() == null) {
-                if (parentNode == null) {//если удаляем корень, у которого нет детей
-                    root = null;
-                    size--;
-                    return true;
+            if (deleteNode.getLeft() == null && deleteNode.getRight() == null) {
+                if (deleteNodeParent != null) {
+                    if (deleteNodeParent.getLeft() == deleteNode) {
+                        deleteNodeParent.setLeft(null);
+                    } else {
+                        deleteNodeParent.setRight(null);
+                    }
+                } else {
+                    root = null; // если удаляем корень, у которого нет детей
                 }
 
-                if (parentNode.getLeft() == foundNode) {
-                    parentNode.setLeft(null);
-                    size--;
-                    return true;
-                }
-                parentNode.setRight(null);
                 size--;
                 return true;
             }
 
-            // если у удаляемого элемента есть только левый сын
-            if (foundNode.getLeft() != null && foundNode.getRight() == null) {
-                if (parentNode == null) { // если удаляем корень
-                    root = foundNode.getLeft();
-                    size--;
-                    return true;
+            // если у удаляемого элемента только 1 ребенок
+            if ((deleteNode.getLeft() != null && deleteNode.getRight() == null) || (deleteNode.getLeft() == null && deleteNode.getRight() != null)) {
+                TreeNode<T> deleteNodeChild = deleteNode.getLeft() != null ? deleteNode.getLeft() : deleteNode.getRight();
+
+                if (deleteNodeParent == null) {
+                    root = deleteNodeChild;
+                } else if (deleteNodeParent.getLeft() == deleteNode) {
+                    deleteNodeParent.setLeft(deleteNodeChild);
+                } else {
+                    deleteNodeParent.setRight(deleteNodeChild);
                 }
 
-                if (parentNode.getLeft() == foundNode) {
-                    parentNode.setLeft(foundNode.getLeft());
-                    size--;
-                    return true;
-                }
-                parentNode.setRight(foundNode.getLeft());
-                size--;
-                return true;
-            }
-
-            //если у удаляемого элемента есть только правый сын
-            if (foundNode.getLeft() == null && foundNode.getRight() != null) {
-                if (parentNode == null) {
-                    root = foundNode.getRight();
-                    size--;
-                    return true;
-                }
-
-                if (parentNode.getLeft() == foundNode) {
-                    parentNode.setLeft(foundNode.getRight());
-                    size--;
-                    return true;
-                }
-                parentNode.setRight(foundNode.getRight());
                 size--;
                 return true;
             }
 
             //если у удаляемого элемента есть 2 детей
-            if (foundNode.getLeft() != null && foundNode.getRight() != null) {
-                TreeNode<T> minLeftNode = foundNode.getRight();
-                TreeNode<T> minLeftNodeParent = foundNode;
+            if (deleteNode.getLeft() != null && deleteNode.getRight() != null) {
+                TreeNode<T> minLeftNode = deleteNode.getRight();
+                TreeNode<T> minLeftNodeParent = deleteNode;
 
-            /*    if (parentNode == null && foundNode.getRight().getLeft() == null) {
-                    minLeftNode.setLeft(foundNode.getLeft());
+                if (minLeftNode.getLeft() != null) {
+                    //ищем самый левый элемент в правом поддереве
+                    while (minLeftNode.getLeft() != null) {
+                        minLeftNodeParent = minLeftNode;
+                        minLeftNode = minLeftNode.getLeft();
+                    }
+
+                    // убираем из дерева самый левый элемент
+                    if (minLeftNode.getRight() != null) { //если у самого левого элемента есть правый сын
+                        minLeftNodeParent.setLeft(minLeftNode.getRight());
+                    } else { //если у самого левого элемента нет правого сына
+                        minLeftNodeParent.setLeft(null);
+                    }
+
+                    minLeftNode.setRight(deleteNode.getRight());
+                }
+
+                minLeftNode.setLeft(deleteNode.getLeft());
+
+                if (deleteNodeParent == null) { // если удаляем корень
                     root = minLeftNode;
-                    size--;
-                    return true;
-                    }*/
-
-
-                //ищем самый левый элемент в правом поддереве
-                while (minLeftNode.getLeft() != null) {
-                    minLeftNodeParent = minLeftNode;
-                    minLeftNode = minLeftNode.getLeft();
+                } else if (deleteNodeParent.getLeft() == deleteNode) {
+                    deleteNodeParent.setLeft(minLeftNode);
+                } else {
+                    deleteNodeParent.setRight(minLeftNode);
                 }
-
-                if (minLeftNodeParent == foundNode) {
-                    //todo: реализация для узла с 2 детьми, но без левого элемента в правом поддереве
-                }
-                // убираем из дерева самый левый элемент
-                if (minLeftNode.getRight() != null) { //если у самого левого элемента есть правый сын
-                    minLeftNodeParent.setLeft(minLeftNode.getRight());
-                } else { //если у самого левого элемента нет правого сына
-                    minLeftNodeParent.setLeft(null);
-                }
-
-                //удаляем узел с искомым значением
-                minLeftNode.setLeft(foundNode.getLeft());
-                minLeftNode.setRight(foundNode.getRight());
-                if (parentNode == null) { // если удаляемый узел - это корень
-                    root = minLeftNode;
-                    size--;
-                    return true;
-                }
-                if (parentNode.getLeft() == foundNode) {
-                    parentNode.setLeft(minLeftNode);
-                    size--;
-                    return true;
-                }
-                parentNode.setRight(minLeftNode);
                 size--;
                 return true;
             }
         }
-
         //если нет узла с заданным значением
         return false;
     }
+
 
     public void breadthFirstSearch() { //обход в ширину
         Queue<TreeNode<T>> queue = new LinkedList<>();
@@ -232,7 +191,7 @@ public class Tree<T extends Comparable<T>> {
 
         while (!queue.isEmpty()) {
             TreeNode<T> element = queue.poll();
-            System.out.println(element);
+            System.out.println(element.getData());
             if (element.getLeft() != null) {
                 queue.add(element.getLeft());
             }
@@ -248,31 +207,36 @@ public class Tree<T extends Comparable<T>> {
 
         while (!stack.isEmpty()) {
             TreeNode<T> element = stack.pollLast();
-            System.out.println(element);
-            if (element.getRight() != null) {
-                stack.addLast(element.getRight());
-            }
-            if (element.getLeft() != null) {
-                stack.addLast(element.getLeft());
+            try {
+                //NullPointerException возникает, если был удален единственный элемент дерева - корень
+                System.out.println(element.getData());
+
+                if (element.getRight() != null) {
+                    stack.addLast(element.getRight());
+                }
+                if (element.getLeft() != null) {
+                    stack.addLast(element.getLeft());
+                }
+            } catch (NullPointerException e) {
+                System.out.println("Дерево не содержит элементов!");
             }
         }
     }
 
-    public void depthFirstSearchWithRecursion() {//todo: переименовать
-        depthFirstSearchWithRecursionMethod(root);
+    public void depthFirstSearchRec() { // обход в глубину с рекурсией
+        depthFirstSearchRecMethod(root);
     }
 
-    private void depthFirstSearchWithRecursionMethod(TreeNode<T> node) { //todo: переименовать
+    private void depthFirstSearchRecMethod(TreeNode<T> node) {
+        if (node == null) {
+            return;
+        }
+
         System.out.println(node.getData());
 
-        for (TreeNode<T> leftChild = node.getLeft(); node.getLeft() != null; ) {
-            depthFirstSearchWithRecursionMethod(leftChild);
-        }
-
-        if (node.getRight() != null) {
-            for (TreeNode<T> rightChild = node.getRight(); node.getRight() != null; ) {
-                depthFirstSearchWithRecursionMethod(rightChild);
-            }
-        }
+        TreeNode<T> leftChild = node.getLeft();
+        depthFirstSearchRecMethod(leftChild);
+        TreeNode<T> rightChild = node.getRight();
+        depthFirstSearchRecMethod(rightChild);
     }
 }
