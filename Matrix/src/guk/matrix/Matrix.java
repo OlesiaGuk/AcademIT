@@ -5,17 +5,17 @@ import guk.vector.Vector;
 public class Matrix {
     private Vector[] rows;
 
-    public Matrix(int rowsAmount, int columnsAmount) {
-        if (rowsAmount <= 0) {
+    public Matrix(int rowsCount, int columnsCount) {
+        if (rowsCount <= 0) {
             throw new IllegalArgumentException("Количество строк в матрице должно быть > 0");
         }
-        if (columnsAmount <= 0) {
+        if (columnsCount <= 0) {
             throw new IllegalArgumentException("Количество столбцов в матрице должно быть > 0");
         }
 
-        rows = new Vector[rowsAmount];
-        for (int i = 0; i < rowsAmount; i++) {
-            rows[i] = new Vector(columnsAmount);
+        rows = new Vector[rowsCount];
+        for (int i = 0; i < rowsCount; i++) {
+            rows[i] = new Vector(columnsCount);
         }
     }
 
@@ -23,8 +23,14 @@ public class Matrix {
         if (array.length == 0) {
             throw new IllegalArgumentException("Количество строк в матрице должно быть > 0");
         }
-        if (array[0].length == 0) {
-            throw new IllegalArgumentException("Количество столбцов в матрице должно быть > 0");
+
+        int secondDimensionLength = 0;
+        for (double[] a : array) {
+            secondDimensionLength += a.length;
+        }
+
+        if (secondDimensionLength == 0) {
+            throw new IllegalArgumentException("Невозможно создать матрицу размера 0");
         }
 
         rows = new Vector[array.length];
