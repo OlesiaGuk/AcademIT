@@ -9,7 +9,7 @@ public class MyArrayList<E> implements List<E> {
 
     public MyArrayList(int capacity) {
         if (capacity <= 0) {
-            throw new IllegalArgumentException("Вместимость массива должна быть >= 0");
+            throw new NegativeArraySizeException("Вместимость массива должна быть >= 0");
         }
 
         //noinspection unchecked
@@ -54,7 +54,7 @@ public class MyArrayList<E> implements List<E> {
         if (requiredCapacity <= items.length) {
             return;
         }
-        items = Arrays.copyOf(items, requiredCapacity);
+        items = Arrays.copyOf(items, items.length * 2 + requiredCapacity);
     }
 
     @Override
@@ -130,14 +130,13 @@ public class MyArrayList<E> implements List<E> {
 
     @Override
     public boolean remove(Object o) {
-        int currentModCount = modCount;
         int index = indexOf(o);
 
         if (index >= 0) {
             remove(index);
         }
 
-        return currentModCount != modCount;
+        return index >= 0;
     }
 
     @Override
@@ -182,12 +181,14 @@ public class MyArrayList<E> implements List<E> {
         }
         ensureCapacity(size + addedCollectionSize);
 
+        int position = size;
         for (E e : c) {
-            items[size] = e;
-            size++;
-            modCount++;
+            items[position] = e;
+            position++;
         }
 
+        size += addedCollectionSize;
+        modCount++;
         return true;
     }
 
@@ -207,12 +208,13 @@ public class MyArrayList<E> implements List<E> {
         ensureCapacity(size + addedCollectionSize);
         System.arraycopy(items, index, items, index + addedCollectionSize, size - index);
 
+        int position = index;
         for (E e : c) {
-            items[index] = e;
-            index++;
-            modCount++;
+            items[position] = e;
+            position++;
         }
 
+        modCount++;
         size += addedCollectionSize;
         return true;
     }
@@ -250,8 +252,10 @@ public class MyArrayList<E> implements List<E> {
         int currentModCount = modCount;
 
         for (Object e : c) {
-            if (contains(e)) {
-                remove(e);
+            boolean notAllRemoved = true;
+
+            while (notAllRemoved) {
+                notAllRemoved = remove(e);
             }
         }
 

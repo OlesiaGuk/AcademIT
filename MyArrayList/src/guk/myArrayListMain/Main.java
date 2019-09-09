@@ -28,10 +28,16 @@ public class Main {
         System.out.println(arrayList.remove(Integer.valueOf(10)));
         System.out.println("Список arrayList: " + arrayList);
 
-        Integer[] a = new Integer[]{5, 6, 55, 70, 80, 90, 100, 200, 300, 500};
+        Integer[] a = new Integer[]{5, 6, 55, 70, 80, 90, 100, 5, 300, 500};
         LinkedList<Integer> linkedList = new LinkedList<>(Arrays.asList(a));
 
-        System.out.println(arrayList.retainAll(linkedList));
+        System.out.println(arrayList.addAll(linkedList));
+        System.out.println("Список arrayList: " + arrayList);
+        System.out.println("Размер arrayList = " + arrayList.size());
+
+        MyArrayList<Integer> deleteList = new MyArrayList<>(2);
+        deleteList.addAll(Arrays.asList(5, 500));
+        arrayList.removeAll(deleteList);
         System.out.println("Список arrayList: " + arrayList);
 
         int value = 1;
