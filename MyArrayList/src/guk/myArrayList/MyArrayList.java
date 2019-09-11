@@ -9,7 +9,7 @@ public class MyArrayList<E> implements List<E> {
 
     public MyArrayList(int capacity) {
         if (capacity <= 0) {
-            throw new NegativeArraySizeException("Вместимость массива должна быть >= 0");
+            throw new IllegalArgumentException("Вместимость списка должна быть > 0");
         }
 
         //noinspection unchecked
@@ -54,7 +54,7 @@ public class MyArrayList<E> implements List<E> {
         if (requiredCapacity <= items.length) {
             return;
         }
-        items = Arrays.copyOf(items, items.length * 2 + requiredCapacity);
+        items = Arrays.copyOf(items, requiredCapacity);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class MyArrayList<E> implements List<E> {
             throw new IndexOutOfBoundsException("Значение индекса превышает размер списка");
         }
 
-        ensureCapacity(size + 1);
+        ensureCapacity(size * 2); //size*2 - чтобы реже пересоздавать массив
         System.arraycopy(items, index, items, index + 1, size - index);
         items[index] = element;
         size++;
@@ -181,10 +181,10 @@ public class MyArrayList<E> implements List<E> {
         }
         ensureCapacity(size + addedCollectionSize);
 
-        int position = size;
+        int i = size;
         for (E e : c) {
-            items[position] = e;
-            position++;
+            items[i] = e;
+            i++;
         }
 
         size += addedCollectionSize;
@@ -208,10 +208,10 @@ public class MyArrayList<E> implements List<E> {
         ensureCapacity(size + addedCollectionSize);
         System.arraycopy(items, index, items, index + addedCollectionSize, size - index);
 
-        int position = index;
+        int i = index;
         for (E e : c) {
-            items[position] = e;
-            position++;
+            items[i] = e;
+            i++;
         }
 
         modCount++;
