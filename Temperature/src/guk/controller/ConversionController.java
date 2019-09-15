@@ -1,0 +1,48 @@
+package guk.controller;
+
+import guk.model.ConversionModel;
+import guk.view.ConversionView;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+public class ConversionController {
+    private ConversionModel model;
+    private ConversionView view;
+
+    public ConversionController(ConversionModel model, ConversionView view) {
+        this.model = model;
+        this.view = view;
+        initializeController();
+    }
+
+    private boolean typeIsCorrect(String s) {
+        try {
+            Double.parseDouble(s);
+            return true;
+        } catch (NumberFormatException e) {
+            view.wrongTypeMessage();
+            return false;
+        }
+    }
+
+    private void initializeController() {
+        view.getConvertButton().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                String text = view.getTemperatureInputField().getText();
+
+                if (!typeIsCorrect(text)) {
+                    return;
+                }
+
+                model.setTemperature(Double.parseDouble(text));
+                if (view.getComboBoxFrom().getSelectedItem() != null) {
+                    double convertedTemperature =
+                            model.getConversion((String) view.getComboBoxFrom().getSelectedItem(), (String) view.getComboBoxTo().getSelectedItem());
+                    view.getTemperatureOutputField().setText(Double.toString(convertedTemperature));
+                }
+            }
+        });
+    }
+}
