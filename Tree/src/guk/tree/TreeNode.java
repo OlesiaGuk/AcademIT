@@ -6,20 +6,12 @@ public class TreeNode<T extends Comparable<T>> {
     private T data;
 
     public TreeNode(T data) {
-        if (data == null) {
-            throw new IllegalArgumentException("Значение узла дерева не должно быть null");
-        }
-
         this.data = data;
         this.left = null;
         this.right = null;
     }
 
     public TreeNode(T data, TreeNode<T> left, TreeNode<T> right) {
-        if (data == null) {
-            throw new IllegalArgumentException("Значение узла дерева не должно быть null");
-        }
-
         this.data = data;
         this.left = left;
         this.right = right;
