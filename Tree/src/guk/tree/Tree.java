@@ -8,8 +8,11 @@ public class Tree<T extends Comparable<T>> {
     private TreeNode<T> root;
     private int size;
 
-    public Tree(TreeNode<T> root) {
-        this.root = root;
+    public Tree() {
+    }
+
+    public Tree(T rootValue) {
+        root = new TreeNode<>(rootValue);
         size++;
     }
 
@@ -27,8 +30,7 @@ public class Tree<T extends Comparable<T>> {
         while (!stack.isEmpty()) {
             TreeNode<T> element = stack.pollLast();
 
-            try {
-                //NullPointerException возникает, если был удален единственный элемент дерева - корень
+            if (element != null) {
                 s.append(element.getData()).append("  ");
                 if (element.getRight() != null) {
                     stack.addLast(element.getRight());
@@ -36,8 +38,6 @@ public class Tree<T extends Comparable<T>> {
                 if (element.getLeft() != null) {
                     stack.addLast(element.getLeft());
                 }
-            } catch (NullPointerException e) {
-                s.append("Дерево не содержит элементов!");
             }
         }
         return s.toString();
@@ -66,23 +66,23 @@ public class Tree<T extends Comparable<T>> {
         }
     }
 
-    public TreeNode<T> findNode(T value) {
+    public boolean findNode(T value) {
         for (TreeNode<T> currentNode = root; ; ) {
             if (value.compareTo(currentNode.getData()) == 0) {
-                return currentNode;
+                return true;
             }
             if (value.compareTo(currentNode.getData()) < 0) {
                 if (currentNode.getLeft() != null) {
                     currentNode = currentNode.getLeft();
                     continue;
                 }
-                return null;
+                return false;
             }
             if (currentNode.getRight() != null) {
                 currentNode = currentNode.getRight();
                 continue;
             }
-            return null;
+            return false;
         }
     }
 
@@ -207,8 +207,7 @@ public class Tree<T extends Comparable<T>> {
 
         while (!stack.isEmpty()) {
             TreeNode<T> element = stack.pollLast();
-            try {
-                //NullPointerException возникает, если был удален единственный элемент дерева - корень
+            if (element != null) {
                 System.out.println(element.getData());
 
                 if (element.getRight() != null) {
@@ -217,8 +216,6 @@ public class Tree<T extends Comparable<T>> {
                 if (element.getLeft() != null) {
                     stack.addLast(element.getLeft());
                 }
-            } catch (NullPointerException e) {
-                System.out.println("Дерево не содержит элементов!");
             }
         }
     }

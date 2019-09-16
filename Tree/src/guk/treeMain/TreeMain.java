@@ -1,11 +1,10 @@
 package guk.treeMain;
 
 import guk.tree.Tree;
-import guk.tree.TreeNode;
 
 public class TreeMain {
     public static void main(String[] args) {
-        Tree<Integer> binaryTree = new Tree<>(new TreeNode<>(5, null, null));
+        Tree<Integer> binaryTree = new Tree<>(5);
         int[] array = new int[]{2, 10, 1, 3, 6, 15, 14, 20, 12, 13};
 
         for (int e : array) {
