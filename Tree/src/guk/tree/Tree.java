@@ -1,18 +1,26 @@
 package guk.tree;
 
+import java.util.Comparator;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class Tree<T extends Comparable<T>> {
+public class Tree<T> {
     private TreeNode<T> root;
     private int size;
+    private Comparator<T> comparator;
 
     public Tree() {
     }
 
     public Tree(T rootValue) {
         root = new TreeNode<>(rootValue);
+        size++;
+    }
+
+    public Tree(T rootValue, Comparator<T> comparator) {
+        root = new TreeNode<>(rootValue);
+        this.comparator = comparator;
         size++;
     }
 
@@ -43,11 +51,19 @@ public class Tree<T extends Comparable<T>> {
         return s.toString();
     }
 
+    private int getCompare(T data1, T data2, Comparator<T> comparator) {
+        if (comparator != null) {
+            return comparator.compare(data1, data2);
+        }
+        return ((Comparable<T>) data1).compareTo(data2);
+    }
+
     public void add(T newData) {
         TreeNode<T> newNode = new TreeNode<>(newData);
 
         for (TreeNode<T> currentNode = root; ; ) {
-            if (newData.compareTo(currentNode.getData()) < 0) {
+            int compareResult = getCompare(newData, currentNode.getData(), comparator);
+            if (compareResult < 0) {
                 if (currentNode.getLeft() != null) {
                     currentNode = currentNode.getLeft();
                     continue;
@@ -68,10 +84,11 @@ public class Tree<T extends Comparable<T>> {
 
     public boolean findNode(T value) {
         for (TreeNode<T> currentNode = root; ; ) {
-            if (value.compareTo(currentNode.getData()) == 0) {
+            int compareResult = getCompare(value, currentNode.getData(), comparator);
+            if (compareResult == 0) {
                 return true;
             }
-            if (value.compareTo(currentNode.getData()) < 0) {
+            if (compareResult < 0) {
                 if (currentNode.getLeft() != null) {
                     currentNode = currentNode.getLeft();
                     continue;
@@ -92,11 +109,12 @@ public class Tree<T extends Comparable<T>> {
 
         //ищем узел с заданным значением, а также его родителя
         for (TreeNode<T> currentNode = root; ; ) {
-            if (value.compareTo(currentNode.getData()) == 0) {
+            int compareResult = getCompare(value, currentNode.getData(), comparator);
+            if (compareResult == 0) {
                 deleteNode = currentNode;
                 break;
             }
-            if (value.compareTo(currentNode.getData()) < 0) {
+            if (compareResult < 0) {
                 if (currentNode.getLeft() != null) {
                     deleteNodeParent = currentNode;
                     currentNode = currentNode.getLeft();
@@ -183,7 +201,6 @@ public class Tree<T extends Comparable<T>> {
         //если нет узла с заданным значением
         return false;
     }
-
 
     public void breadthFirstSearch() { //обход в ширину
         Queue<TreeNode<T>> queue = new LinkedList<>();

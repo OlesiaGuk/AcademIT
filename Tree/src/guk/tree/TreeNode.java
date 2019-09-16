@@ -1,6 +1,6 @@
 package guk.tree;
 
-public class TreeNode<T extends Comparable<T>> {
+public class TreeNode<T> {
     private TreeNode<T> left;
     private TreeNode<T> right;
     private T data;
