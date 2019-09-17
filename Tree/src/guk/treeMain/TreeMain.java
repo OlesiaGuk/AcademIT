@@ -2,6 +2,8 @@ package guk.treeMain;
 
 import guk.tree.Tree;
 
+import java.util.function.Consumer;
+
 public class TreeMain {
     public static void main(String[] args) {
         Tree<Integer> binaryTree = new Tree<>(5);
@@ -14,9 +16,10 @@ public class TreeMain {
         System.out.println(binaryTree);
         System.out.println("Размер дерева = " + binaryTree.size());
 
-        binaryTree.breadthFirstSearch();
-        binaryTree.depthFirstSearch();
-        binaryTree.depthFirstSearchRec();
+        Consumer<Integer> printer = System.out::println;
+        binaryTree.breadthFirstSearch(printer);
+        binaryTree.depthFirstSearch(printer);
+        binaryTree.depthFirstSearchRec(printer);
 
         System.out.println(binaryTree);
         System.out.println("Количество узлов в дереве = " + binaryTree.size());

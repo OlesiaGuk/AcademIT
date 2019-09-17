@@ -4,6 +4,7 @@ import java.util.Comparator;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.function.Consumer;
 
 public class Tree<T> {
     private TreeNode<T> root;
@@ -202,13 +203,14 @@ public class Tree<T> {
         return false;
     }
 
-    public void breadthFirstSearch() { //обход в ширину
+    public void breadthFirstSearch(Consumer<T> consumer) { //обход в ширину
         Queue<TreeNode<T>> queue = new LinkedList<>();
         queue.add(root);
 
         while (!queue.isEmpty()) {
             TreeNode<T> element = queue.poll();
-            System.out.println(element.getData());
+            consumer.accept(element.getData());
+
             if (element.getLeft() != null) {
                 queue.add(element.getLeft());
             }
@@ -218,14 +220,14 @@ public class Tree<T> {
         }
     }
 
-    public void depthFirstSearch() { // обход в глубину
+    public void depthFirstSearch(Consumer<T> consumer) { // обход в глубину
         Deque<TreeNode<T>> stack = new LinkedList<>();
         stack.addLast(root);
 
         while (!stack.isEmpty()) {
             TreeNode<T> element = stack.pollLast();
             if (element != null) {
-                System.out.println(element.getData());
+                consumer.accept(element.getData());
 
                 if (element.getRight() != null) {
                     stack.addLast(element.getRight());
@@ -237,20 +239,20 @@ public class Tree<T> {
         }
     }
 
-    public void depthFirstSearchRec() { // обход в глубину с рекурсией
-        depthFirstSearchRecMethod(root);
+    public void depthFirstSearchRec(Consumer<T> consumer) { // обход в глубину с рекурсией
+        depthFirstSearchRecMethod(root, consumer);
     }
 
-    private void depthFirstSearchRecMethod(TreeNode<T> node) {
+    private void depthFirstSearchRecMethod(TreeNode<T> node, Consumer<T> consumer) {
         if (node == null) {
             return;
         }
 
-        System.out.println(node.getData());
+        consumer.accept(node.getData());
 
         TreeNode<T> leftChild = node.getLeft();
-        depthFirstSearchRecMethod(leftChild);
+        depthFirstSearchRecMethod(leftChild, consumer);
         TreeNode<T> rightChild = node.getRight();
-        depthFirstSearchRecMethod(rightChild);
+        depthFirstSearchRecMethod(rightChild, consumer);
     }
 }
