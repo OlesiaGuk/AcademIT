@@ -19,7 +19,7 @@ public class ConversionView {
     public ConversionView() {
         frame = new JFrame("Перевод температур");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(getFrameSize());
+        frame.setMinimumSize(getFrameSize());
         frame.setLocationRelativeTo(null);
 
         temperatureInputField = new JTextField(5);

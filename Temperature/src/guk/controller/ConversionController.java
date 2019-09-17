@@ -16,7 +16,7 @@ public class ConversionController {
         initializeController();
     }
 
-    private boolean typeIsCorrect(String s) {
+    private boolean isTypeCorrect(String s) {
         try {
             Double.parseDouble(s);
             return true;
@@ -32,7 +32,7 @@ public class ConversionController {
             public void mouseClicked(MouseEvent e) {
                 String text = view.getTemperatureInputField().getText();
 
-                if (!typeIsCorrect(text)) {
+                if (!isTypeCorrect(text)) {
                     return;
                 }
 
