@@ -1,7 +1,5 @@
 package guk.model;
 
-import static guk.model.UtilityFunctions.twoDecimalPlacesRound;
-
 public class ConversionModel {
     private double temperature;
 
@@ -20,55 +18,58 @@ public class ConversionModel {
         this.temperature = temperature;
     }
 
-    public double getConversion(String inputScale, String outputScale) {
-        if (inputScale.equals("Градусы Цельсия")) {
-            if (outputScale.equals("Градусы Фаренгейта")) {
-                return celsiusToFahrenheit();
-            } else if (outputScale.equals("Кельвины")) {
-                return celsiusToKelvin();
+    public enum ScalesEnum {
+        CELSIUS("Градусы Цельсия") {
+            @Override
+            Scale createNewScaleObject(double temp) {
+                return new CelsiusScale(temp);
             }
-            return temperature;
-        } else if (inputScale.equals("Градусы Фаренгейта")) {
-            if (outputScale.equals("Градусы Цельсия")) {
-                return fahrenheitToCelsius();
-            } else if (outputScale.equals("Кельвины")) {
-                return fahrenheitToKelvin();
+        },
+
+        FAHRENHEIT("Градусы Фаренгейта") {
+            @Override
+            Scale createNewScaleObject(double temp) {
+                return new FahrenheitScale(temp);
             }
-            return temperature;
+        },
+
+        KELVIN("Кельвины") {
+            @Override
+            Scale createNewScaleObject(double temp) {
+                return new KelvinScale(temp);
+            }
+        };
+
+        String scaleDegreesName;
+
+        ScalesEnum(String scaleDegreesName) {
+            this.scaleDegreesName = scaleDegreesName;
         }
-        if (outputScale.equals("Градусы Цельсия")) {
-            return kelvinToCelsius();
-        } else if (outputScale.equals("Градусы Фаренгейта")) {
-            return kelvinToFahrenheit();
+
+        public String getScaleDegreesName() {
+            return scaleDegreesName;
         }
-        return temperature;
+
+        abstract Scale createNewScaleObject(double temp);
+
+        @Override //чтобы в комбобоксах выводилось название шкал на русском
+        public String toString() {
+            return scaleDegreesName;
+        }
     }
 
-    private double celsiusToKelvin() {
-        return twoDecimalPlacesRound(temperature + 273.15);
+    private String findEnumName(String scaleDegreesName) {
+        for (ScalesEnum e : ScalesEnum.values()) {
+            if (e.getScaleDegreesName().equals(scaleDegreesName)) {
+                return e.name();
+            }
+        }
+        return null;
     }
 
-    private double kelvinToCelsius() {
-        return twoDecimalPlacesRound(temperature - 273.15);
-    }
+    public double convert(String inputScale, String outputScale) {
+        double interimTemp = ScalesEnum.valueOf(findEnumName(inputScale)).createNewScaleObject(temperature).convertToCelsius();
 
-    private double celsiusToFahrenheit() {
-        return twoDecimalPlacesRound(temperature * 9 / 5 + 32);
-    }
-
-    private double fahrenheitToCelsius() {
-        return twoDecimalPlacesRound((temperature - 32) * 5 / 9);
-    }
-
-    private double fahrenheitToKelvin() {
-        return twoDecimalPlacesRound((temperature - 32) * 5 / 9 + 273.15);
-    }
-
-    private double kelvinToFahrenheit() {
-        return twoDecimalPlacesRound((temperature - 273.15) * 9 / 5 + 32);
-    }
-
-    public static String[] getTemperatureScales() {
-        return new String[]{"Градусы Цельсия", "Градусы Фаренгейта", "Кельвины"};
+        return ScalesEnum.valueOf(findEnumName(outputScale)).createNewScaleObject(interimTemp).convertFromCelsius();
     }
 }

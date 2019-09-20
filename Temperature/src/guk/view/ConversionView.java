@@ -5,6 +5,7 @@ import guk.model.ConversionModel;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.util.EnumSet;
 
 public class ConversionView {
     private JFrame frame;
@@ -29,8 +30,8 @@ public class ConversionView {
         convertButton = new JButton("Перевести");
         labelFrom = new JLabel("из ");
         labelTo = new JLabel("в ");
-        comboBoxFrom = new JComboBox<>(ConversionModel.getTemperatureScales());
-        comboBoxTo = new JComboBox<>(ConversionModel.getTemperatureScales());
+        comboBoxFrom = new JComboBox<>(ConversionModel.ScalesEnum.values());
+        comboBoxTo = new JComboBox<>(ConversionModel.ScalesEnum.values());
 
         SwingUtilities.invokeLater(() -> {
             //создаем первую строку компонентов на форме
@@ -66,6 +67,8 @@ public class ConversionView {
             frame.setVisible(true);
         });
     }
+
+
 
     private Dimension getFrameSize() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();

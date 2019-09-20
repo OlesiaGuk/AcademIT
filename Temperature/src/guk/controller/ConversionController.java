@@ -37,9 +37,9 @@ public class ConversionController {
                 }
 
                 model.setTemperature(Double.parseDouble(text));
-                if (view.getComboBoxFrom().getSelectedItem() != null) {
+                if (view.getComboBoxFrom().getSelectedItem() != null && view.getComboBoxTo().getSelectedItem() != null) {
                     double convertedTemperature =
-                            model.getConversion((String) view.getComboBoxFrom().getSelectedItem(), (String) view.getComboBoxTo().getSelectedItem());
+                            model.convert(view.getComboBoxFrom().getSelectedItem().toString(),view.getComboBoxTo().getSelectedItem().toString());
                     view.getTemperatureOutputField().setText(Double.toString(convertedTemperature));
                 }
             }
