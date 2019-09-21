@@ -1,13 +1,15 @@
 package guk.view;
 
+import guk.controller.ConversionController;
 import guk.model.ConversionModel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.util.EnumSet;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class ConversionView {
+public class ConversionView implements ActionListener {
     private JFrame frame;
     private JTextField temperatureInputField;
     private JTextField temperatureOutputField;
@@ -18,22 +20,22 @@ public class ConversionView {
     private JComboBox comboBoxTo;
 
     public ConversionView() {
-        frame = new JFrame("Перевод температур");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setMinimumSize(getFrameSize());
-        frame.setLocationRelativeTo(null);
-
-        temperatureInputField = new JTextField(5);
-        temperatureOutputField = new JTextField(5);
-        temperatureOutputField.setEditable(false);
-        temperatureOutputField.setBackground(Color.white);
-        convertButton = new JButton("Перевести");
-        labelFrom = new JLabel("из ");
-        labelTo = new JLabel("в ");
-        comboBoxFrom = new JComboBox<>(ConversionModel.ScalesEnum.values());
-        comboBoxTo = new JComboBox<>(ConversionModel.ScalesEnum.values());
-
         SwingUtilities.invokeLater(() -> {
+            frame = new JFrame("Перевод температур");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setMinimumSize(getFrameSize());
+            frame.setLocationRelativeTo(null);
+
+            temperatureInputField = new JTextField(5);
+            temperatureOutputField = new JTextField(5);
+            temperatureOutputField.setEditable(false);
+            temperatureOutputField.setBackground(Color.white);
+            convertButton = new JButton("Перевести");
+            labelFrom = new JLabel("из ");
+            labelTo = new JLabel("в ");
+            comboBoxFrom = new JComboBox<>(ConversionModel.ScalesEnum.values());
+            comboBoxTo = new JComboBox<>(ConversionModel.ScalesEnum.values());
+
             //создаем первую строку компонентов на форме
             JPanel firstLinePanel = new JPanel();
             firstLinePanel.setLayout(new BoxLayout(firstLinePanel, BoxLayout.X_AXIS));
@@ -65,10 +67,16 @@ public class ConversionView {
 
             frame.add(mainBox);
             frame.setVisible(true);
+
+            convertButton.addActionListener(this);
         });
     }
 
-
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        ConversionController controller = new ConversionController(new ConversionModel(), this);
+        controller.getConversion();
+    }
 
     private Dimension getFrameSize() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -81,7 +89,7 @@ public class ConversionView {
         return screenSize;
     }
 
-    public void wrongTypeMessage() {
+    public static void wrongTypeMessage() {
         JOptionPane.showMessageDialog(null, "Введено не число!", "Ошибка", JOptionPane.ERROR_MESSAGE);
     }
 
@@ -149,3 +157,20 @@ public class ConversionView {
         this.comboBoxTo = comboBoxTo;
     }
 }
+
+////todo: удалить код ниже
+    /* convertButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                String text = temperatureInputField.getText();
+*/
+
+                    /*if (!ConversionController.isTypeCorrect(text)) {
+                        return;
+                    }
+
+                    if (comboBoxFrom.getSelectedItem() != null && comboBoxTo.getSelectedItem() != null) {
+                        double convertedTemperature =
+                                ConversionModel.convert(comboBoxFrom.getSelectedItem().toString(), comboBoxTo.getSelectedItem().toString(), Double.parseDouble(text));
+                        temperatureOutputField.setText(Double.toString(convertedTemperature));
+                    }*/
