@@ -37,14 +37,23 @@ public class Tree<T> {
     public String toString() {
         StringBuilder s = new StringBuilder();
 
-        Deque<TreeNode<T>> stack = new LinkedList<>();
-        stack.addLast(root);
+        if (size == 0) {
+            s.append("Дерево пустое");
+        } else {
+            Deque<TreeNode<T>> stack = new LinkedList<>();
+            stack.addLast(root);
 
-        while (!stack.isEmpty()) {
-            TreeNode<T> element = stack.pollLast();
+            int appendedElementsCount = 0;
+            while (!stack.isEmpty()) {
+                TreeNode<T> element = stack.removeLast();
 
-            if (element != null) {
-                s.append(element.getData()).append("  ");
+                s.append(element.getData());
+
+                appendedElementsCount++;
+                if (appendedElementsCount != size) {
+                    s.append(", ");
+                }
+
                 if (element.getRight() != null) {
                     stack.addLast(element.getRight());
                 }
@@ -56,7 +65,7 @@ public class Tree<T> {
         return s.toString();
     }
 
-    private int compare(T data1, T data2, Comparator<T> comparator) {
+    private int compare(T data1, T data2) {
         if (comparator != null) {
             return comparator.compare(data1, data2);
         }
@@ -66,8 +75,14 @@ public class Tree<T> {
     public void add(T newData) {
         TreeNode<T> newNode = new TreeNode<>(newData);
 
+        if (size == 0) {
+            root = newNode;
+            size++;
+            return;
+        }
+
         for (TreeNode<T> currentNode = root; ; ) {
-            int compareResult = compare(newData, currentNode.getData(), comparator);
+            int compareResult = compare(newData, currentNode.getData());
             if (compareResult < 0) {
                 if (currentNode.getLeft() != null) {
                     currentNode = currentNode.getLeft();
@@ -89,7 +104,7 @@ public class Tree<T> {
 
     public boolean findNode(T value) {
         for (TreeNode<T> currentNode = root; ; ) {
-            int compareResult = compare(value, currentNode.getData(), comparator);
+            int compareResult = compare(value, currentNode.getData());
             if (compareResult == 0) {
                 return true;
             }
@@ -109,12 +124,16 @@ public class Tree<T> {
     }
 
     public boolean deleteNode(T value) {
+        if (size == 0) {
+            return false;
+        }
+
         TreeNode<T> deleteNode = null;
         TreeNode<T> deleteNodeParent = null;
 
         //ищем узел с заданным значением, а также его родителя
         for (TreeNode<T> currentNode = root; ; ) {
-            int compareResult = compare(value, currentNode.getData(), comparator);
+            int compareResult = compare(value, currentNode.getData());
             if (compareResult == 0) {
                 deleteNode = currentNode;
                 break;
@@ -208,6 +227,10 @@ public class Tree<T> {
     }
 
     public void breadthFirstSearch(Consumer<T> consumer) { //обход в ширину
+        if (size == 0) {
+            return;
+        }
+
         Queue<TreeNode<T>> queue = new LinkedList<>();
         queue.add(root);
 
@@ -225,6 +248,10 @@ public class Tree<T> {
     }
 
     public void depthFirstSearch(Consumer<T> consumer) { // обход в глубину
+        if (size == 0) {
+            return;
+        }
+
         Deque<TreeNode<T>> stack = new LinkedList<>();
         stack.addLast(root);
 
@@ -252,7 +279,7 @@ public class Tree<T> {
 
         consumer.accept(node.getData());
 
-        depthFirstSearchRec( node.getLeft(), consumer);
+        depthFirstSearchRec(node.getLeft(), consumer);
         depthFirstSearchRec(node.getRight(), consumer);
     }
 }
