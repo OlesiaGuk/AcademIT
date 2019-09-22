@@ -66,6 +66,16 @@ public class Tree<T> {
     }
 
     private int compare(T data1, T data2) {
+        if (data1 == null || data2 == null) {
+            if (data1 != null) {
+                return -1;
+            }
+            if (data2 == null) {
+                return 0;
+            }
+            return 1;
+        }
+
         if (comparator != null) {
             return comparator.compare(data1, data2);
         }

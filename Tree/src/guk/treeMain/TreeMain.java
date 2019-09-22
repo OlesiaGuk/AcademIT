@@ -26,7 +26,7 @@ public class TreeMain {
         System.out.println("Количество узлов в дереве = " + binaryTree.size());
 
         binaryTree.deleteNode(2);
-        System.out.println("Удалили 2: " + binaryTree); //удаляем элемент без левого поддереве в правом потомке
+        System.out.println("Удалили 2: " + binaryTree); //удаляем элемент без левого поддерева в правом потомке
         System.out.println("Количество узлов в дереве = " + binaryTree.size());
 
         binaryTree.deleteNode(10);
@@ -36,5 +36,8 @@ public class TreeMain {
         binaryTree.deleteNode(5);
         System.out.println("Удалили корень: " + binaryTree);
         System.out.println("Количество узлов в дереве = " + binaryTree.size());
+
+        binaryTree.add(null);
+        System.out.println(binaryTree);
     }
 }
