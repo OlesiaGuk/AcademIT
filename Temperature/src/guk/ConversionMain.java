@@ -1,14 +1,11 @@
 package guk;
 
-import guk.view.ConversionView;
+import guk.controller.ConversionController;
+import guk.model.ConversionModel;
 
 public class ConversionMain {
     public static void main(String[] args) {
-        new ConversionView();
+        ConversionModel model = new ConversionModel();
+        ConversionController controller = new ConversionController(model);
     }
 }
-
-//todo: удалить код ниже
-//ConversionView view = new ConversionView();
-//ConversionModel model = new ConversionModel();
-// ConversionController controller = new ConversionController(model, view);

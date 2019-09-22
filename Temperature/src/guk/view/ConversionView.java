@@ -1,6 +1,6 @@
 package guk.view;
 
-import guk.controller.ConversionController;
+import guk.controller.ControllerInterface;
 import guk.model.ConversionModel;
 
 import javax.swing.*;
@@ -10,7 +10,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ConversionView implements ActionListener {
+    private ControllerInterface controller;
     private JFrame frame;
+    private JLabel labelInputFieldSign;
+    private JLabel labelResultFieldSign;
     private JTextField temperatureInputField;
     private JTextField temperatureOutputField;
     private JButton convertButton;
@@ -19,13 +22,16 @@ public class ConversionView implements ActionListener {
     private JComboBox comboBoxFrom;
     private JComboBox comboBoxTo;
 
-    public ConversionView() {
+    public ConversionView(ControllerInterface controller) {
         SwingUtilities.invokeLater(() -> {
+            this.controller = controller;
             frame = new JFrame("Перевод температур");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setMinimumSize(getFrameSize());
             frame.setLocationRelativeTo(null);
 
+            labelInputFieldSign = new JLabel("Температура: ");
+            labelResultFieldSign = new JLabel("Результат: ");
             temperatureInputField = new JTextField(5);
             temperatureOutputField = new JTextField(5);
             temperatureOutputField.setEditable(false);
@@ -35,6 +41,12 @@ public class ConversionView implements ActionListener {
             labelTo = new JLabel("в ");
             comboBoxFrom = new JComboBox<>(ConversionModel.ScalesEnum.values());
             comboBoxTo = new JComboBox<>(ConversionModel.ScalesEnum.values());
+
+            JPanel signLinePanel = new JPanel();
+            signLinePanel.setLayout(new BoxLayout(signLinePanel, BoxLayout.X_AXIS));
+            signLinePanel.add(labelInputFieldSign);
+            signLinePanel.add(Box.createHorizontalStrut(140));
+            signLinePanel.add(labelResultFieldSign);
 
             //создаем первую строку компонентов на форме
             JPanel firstLinePanel = new JPanel();
@@ -62,6 +74,7 @@ public class ConversionView implements ActionListener {
 
             Box mainBox = Box.createVerticalBox();
             mainBox.setBorder(new EmptyBorder(50, 10, 50, 10));
+            mainBox.add(signLinePanel);
             mainBox.add(firstLinePanel);
             mainBox.add(secondLinePanel);
 
@@ -74,8 +87,23 @@ public class ConversionView implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        ConversionController controller = new ConversionController(new ConversionModel(), this);
-        controller.getConversion();
+        String text = temperatureInputField.getText();
+
+        if (!isTypeCorrect(text)) {
+            return;
+        }
+
+        controller.getConversion(text);
+    }
+
+    private static boolean isTypeCorrect(String s) {
+        try {
+            Double.parseDouble(s);
+            return true;
+        } catch (NumberFormatException e) {
+            wrongTypeMessage();
+            return false;
+        }
     }
 
     private Dimension getFrameSize() {
@@ -89,7 +117,7 @@ public class ConversionView implements ActionListener {
         return screenSize;
     }
 
-    public static void wrongTypeMessage() {
+    private static void wrongTypeMessage() {
         JOptionPane.showMessageDialog(null, "Введено не число!", "Ошибка", JOptionPane.ERROR_MESSAGE);
     }
 
@@ -157,20 +185,3 @@ public class ConversionView implements ActionListener {
         this.comboBoxTo = comboBoxTo;
     }
 }
-
-////todo: удалить код ниже
-    /* convertButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                String text = temperatureInputField.getText();
-*/
-
-                    /*if (!ConversionController.isTypeCorrect(text)) {
-                        return;
-                    }
-
-                    if (comboBoxFrom.getSelectedItem() != null && comboBoxTo.getSelectedItem() != null) {
-                        double convertedTemperature =
-                                ConversionModel.convert(comboBoxFrom.getSelectedItem().toString(), comboBoxTo.getSelectedItem().toString(), Double.parseDouble(text));
-                        temperatureOutputField.setText(Double.toString(convertedTemperature));
-                    }*/
