@@ -14,6 +14,10 @@ public class Tree<T> {
     public Tree() {
     }
 
+    public Tree(Comparator<T> comparator) {
+        this.comparator = comparator;
+    }
+
     public Tree(T rootValue) {
         root = new TreeNode<>(rootValue);
         size++;
@@ -52,7 +56,7 @@ public class Tree<T> {
         return s.toString();
     }
 
-    private int getCompare(T data1, T data2, Comparator<T> comparator) {
+    private int compare(T data1, T data2, Comparator<T> comparator) {
         if (comparator != null) {
             return comparator.compare(data1, data2);
         }
@@ -63,7 +67,7 @@ public class Tree<T> {
         TreeNode<T> newNode = new TreeNode<>(newData);
 
         for (TreeNode<T> currentNode = root; ; ) {
-            int compareResult = getCompare(newData, currentNode.getData(), comparator);
+            int compareResult = compare(newData, currentNode.getData(), comparator);
             if (compareResult < 0) {
                 if (currentNode.getLeft() != null) {
                     currentNode = currentNode.getLeft();
@@ -85,7 +89,7 @@ public class Tree<T> {
 
     public boolean findNode(T value) {
         for (TreeNode<T> currentNode = root; ; ) {
-            int compareResult = getCompare(value, currentNode.getData(), comparator);
+            int compareResult = compare(value, currentNode.getData(), comparator);
             if (compareResult == 0) {
                 return true;
             }
@@ -110,7 +114,7 @@ public class Tree<T> {
 
         //ищем узел с заданным значением, а также его родителя
         for (TreeNode<T> currentNode = root; ; ) {
-            int compareResult = getCompare(value, currentNode.getData(), comparator);
+            int compareResult = compare(value, currentNode.getData(), comparator);
             if (compareResult == 0) {
                 deleteNode = currentNode;
                 break;
@@ -225,34 +229,30 @@ public class Tree<T> {
         stack.addLast(root);
 
         while (!stack.isEmpty()) {
-            TreeNode<T> element = stack.pollLast();
-            if (element != null) {
-                consumer.accept(element.getData());
+            TreeNode<T> element = stack.removeLast();
+            consumer.accept(element.getData());
 
-                if (element.getRight() != null) {
-                    stack.addLast(element.getRight());
-                }
-                if (element.getLeft() != null) {
-                    stack.addLast(element.getLeft());
-                }
+            if (element.getRight() != null) {
+                stack.addLast(element.getRight());
+            }
+            if (element.getLeft() != null) {
+                stack.addLast(element.getLeft());
             }
         }
     }
 
     public void depthFirstSearchRec(Consumer<T> consumer) { // обход в глубину с рекурсией
-        depthFirstSearchRecMethod(root, consumer);
+        depthFirstSearchRec(root, consumer);
     }
 
-    private void depthFirstSearchRecMethod(TreeNode<T> node, Consumer<T> consumer) {
+    private void depthFirstSearchRec(TreeNode<T> node, Consumer<T> consumer) {
         if (node == null) {
             return;
         }
 
         consumer.accept(node.getData());
 
-        TreeNode<T> leftChild = node.getLeft();
-        depthFirstSearchRecMethod(leftChild, consumer);
-        TreeNode<T> rightChild = node.getRight();
-        depthFirstSearchRecMethod(rightChild, consumer);
+        depthFirstSearchRec( node.getLeft(), consumer);
+        depthFirstSearchRec(node.getRight(), consumer);
     }
 }
