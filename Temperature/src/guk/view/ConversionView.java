@@ -93,7 +93,7 @@ public class ConversionView implements ActionListener {
             return;
         }
 
-        controller.getConversion(text);
+        controller.convertTemperature(text);
     }
 
     private static boolean isTypeCorrect(String s) {

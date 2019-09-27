@@ -5,9 +5,6 @@ import static guk.model.UtilityFunctions.twoDecimalPlacesRound;
 public class KelvinScale implements Scale {
     private double temperature;
 
-    public KelvinScale() {
-    }
-
     public KelvinScale(double temperature) {
         this.temperature = temperature;
     }

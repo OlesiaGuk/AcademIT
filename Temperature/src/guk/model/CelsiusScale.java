@@ -3,9 +3,6 @@ package guk.model;
 public class CelsiusScale implements Scale {
     private double temperature;
 
-    public CelsiusScale() {
-    }
-
     public CelsiusScale(double temperature) {
         this.temperature = temperature;
     }

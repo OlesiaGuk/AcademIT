@@ -5,9 +5,6 @@ import static guk.model.UtilityFunctions.twoDecimalPlacesRound;
 public class FahrenheitScale implements Scale {
     private double temperature;
 
-    public FahrenheitScale() {
-    }
-
     public FahrenheitScale(double temperature) {
         this.temperature = temperature;
     }
