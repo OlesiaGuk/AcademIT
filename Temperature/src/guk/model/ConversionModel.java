@@ -21,22 +21,22 @@ public class ConversionModel {
     public enum ScalesEnum {
         CELSIUS("Градусы Цельсия") {
             @Override
-            Scale createNewScaleObject(double temp) {
-                return new CelsiusScale(temp);
+            Scale createNewScaleObject() {
+                return new CelsiusScale();
             }
         },
 
         FAHRENHEIT("Градусы Фаренгейта") {
             @Override
-            Scale createNewScaleObject(double temp) {
-                return new FahrenheitScale(temp);
+            Scale createNewScaleObject() {
+                return new FahrenheitScale();
             }
         },
 
         KELVIN("Кельвины") {
             @Override
-            Scale createNewScaleObject(double temp) {
-                return new KelvinScale(temp);
+            Scale createNewScaleObject() {
+                return new KelvinScale();
             }
         };
 
@@ -50,7 +50,7 @@ public class ConversionModel {
             return scaleDegreesName;
         }
 
-        abstract Scale createNewScaleObject(double temp);
+        abstract Scale createNewScaleObject();
 
         @Override //чтобы в комбобоксах выводилось название шкал на русском
         public String toString() {
@@ -68,8 +68,8 @@ public class ConversionModel {
     }
 
     public double convert(String inputScale, String outputScale) {
-        double interimTemp = ScalesEnum.valueOf(findEnumName(inputScale)).createNewScaleObject(temperature).convertToCelsius();
+        double interimTemp = ScalesEnum.valueOf(findEnumName(inputScale)).createNewScaleObject().convertToCelsius(temperature);
 
-        return ScalesEnum.valueOf(findEnumName(outputScale)).createNewScaleObject(interimTemp).convertFromCelsius();
+        return ScalesEnum.valueOf(findEnumName(outputScale)).createNewScaleObject().convertFromCelsius(interimTemp);
     }
 }

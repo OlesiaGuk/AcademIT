@@ -3,27 +3,13 @@ package guk.model;
 import static guk.model.UtilityFunctions.twoDecimalPlacesRound;
 
 public class FahrenheitScale implements Scale {
-    private double temperature;
-
-    public FahrenheitScale(double temperature) {
-        this.temperature = temperature;
-    }
-
-    public double getTemperature() {
-        return temperature;
-    }
-
-    public void setTemperature(double temperature) {
-        this.temperature = temperature;
-    }
-
     @Override
-    public double convertToCelsius() {
+    public double convertToCelsius(double temperature) {
         return twoDecimalPlacesRound((temperature - 32) * 5 / 9);
     }
 
     @Override
-    public double convertFromCelsius() {
+    public double convertFromCelsius(double temperature) {
         return twoDecimalPlacesRound(temperature * 9 / 5 + 32);
     }
 }

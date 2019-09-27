@@ -3,27 +3,13 @@ package guk.model;
 import static guk.model.UtilityFunctions.twoDecimalPlacesRound;
 
 public class KelvinScale implements Scale {
-    private double temperature;
-
-    public KelvinScale(double temperature) {
-        this.temperature = temperature;
-    }
-
-    public double getTemperature() {
-        return temperature;
-    }
-
-    public void setTemperature(double temperature) {
-        this.temperature = temperature;
-    }
-
     @Override
-    public double convertToCelsius() {
+    public double convertToCelsius(double temperature) {
         return twoDecimalPlacesRound(temperature - 273.15);
     }
 
     @Override
-    public double convertFromCelsius() {
+    public double convertFromCelsius(double temperature) {
         return twoDecimalPlacesRound(temperature + 273.15);
     }
 }
