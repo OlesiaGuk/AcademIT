@@ -93,8 +93,13 @@ public class ConversionView implements ActionListener {
             return;
         }
 
-        controller.convertTemperature(text);
+        double temp = Double.parseDouble(text);
+        if (comboBoxFrom.getSelectedItem() != null && comboBoxTo.getSelectedItem() != null) {
+            temperatureOutputField.setText(Double.toString(controller.convertTemperature(
+                    temp, comboBoxFrom.getSelectedItem().toString(), comboBoxTo.getSelectedItem().toString())));
+        }
     }
+
 
     private static boolean isTypeCorrect(String s) {
         try {

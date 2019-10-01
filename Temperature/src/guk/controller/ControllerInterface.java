@@ -1,5 +1,5 @@
 package guk.controller;
 
 public interface ControllerInterface {
-    void convertTemperature(String temperature);
+    double convertTemperature(double temperature, String inputScale, String outputScale);
 }

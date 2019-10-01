@@ -13,13 +13,9 @@ public class ConversionController implements ControllerInterface {
     }
 
     @Override
-    public void convertTemperature(String temperature) {
-        model.setTemperature(Double.parseDouble(temperature));
+    public double convertTemperature(double temperature, String inputScale, String outputScale) {
+        model.setTemperature(temperature);
 
-        if (view.getComboBoxFrom().getSelectedItem() != null && view.getComboBoxTo().getSelectedItem() != null) {
-            double convertedTemperature =
-                    model.convert(view.getComboBoxFrom().getSelectedItem().toString(), view.getComboBoxTo().getSelectedItem().toString());
-            view.getTemperatureOutputField().setText(Double.toString(convertedTemperature));
-        }
+        return model.convert(inputScale, outputScale);
     }
 }
