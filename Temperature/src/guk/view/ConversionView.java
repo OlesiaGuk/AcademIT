@@ -1,7 +1,6 @@
 package guk.view;
 
 import guk.controller.ControllerInterface;
-import guk.model.ConversionModel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -39,8 +38,8 @@ public class ConversionView implements ActionListener {
             convertButton = new JButton("Перевести");
             labelFrom = new JLabel("из ");
             labelTo = new JLabel("в ");
-            comboBoxFrom = new JComboBox<>(ConversionModel.ScalesEnum.values());
-            comboBoxTo = new JComboBox<>(ConversionModel.ScalesEnum.values());
+            comboBoxFrom = new JComboBox<>(controller.getScalesNames());
+            comboBoxTo = new JComboBox<>(controller.getScalesNames());
 
             JPanel signLinePanel = new JPanel();
             signLinePanel.setLayout(new BoxLayout(signLinePanel, BoxLayout.X_AXIS));

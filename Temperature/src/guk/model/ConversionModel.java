@@ -1,13 +1,27 @@
 package guk.model;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 public class ConversionModel {
     private double temperature;
+    private List<Scale> scalesList;
 
     public ConversionModel() {
+        createScalesList();
     }
 
     public ConversionModel(double temperature) {
         this.temperature = temperature;
+        createScalesList();
+    }
+
+    private void createScalesList() {
+        scalesList = new ArrayList<>();
+        scalesList.add(new CelsiusScale());
+        scalesList.add(new FahrenheitScale());
+        scalesList.add(new KelvinScale());
     }
 
     public double getTemperature() {
@@ -18,58 +32,23 @@ public class ConversionModel {
         this.temperature = temperature;
     }
 
-    public enum ScalesEnum {
-        CELSIUS("Градусы Цельсия") {
-            @Override
-            Scale createNewScaleObject() {
-                return new CelsiusScale();
-            }
-        },
-
-        FAHRENHEIT("Градусы Фаренгейта") {
-            @Override
-            Scale createNewScaleObject() {
-                return new FahrenheitScale();
-            }
-        },
-
-        KELVIN("Кельвины") {
-            @Override
-            Scale createNewScaleObject() {
-                return new KelvinScale();
-            }
-        };
-
-        String scaleDegreesName;
-
-        ScalesEnum(String scaleDegreesName) {
-            this.scaleDegreesName = scaleDegreesName;
-        }
-
-        public String getScaleDegreesName() {
-            return scaleDegreesName;
-        }
-
-        abstract Scale createNewScaleObject();
-
-        @Override //чтобы в комбобоксах выводилось название шкал на русском
-        public String toString() {
-            return scaleDegreesName;
-        }
+    public List<Scale> getScalesList() {
+        return scalesList;
     }
 
-    private String findEnumName(String scaleDegreesName) {
-        for (ScalesEnum e : ScalesEnum.values()) {
-            if (e.getScaleDegreesName().equals(scaleDegreesName)) {
-                return e.name();
+    private Scale findScale(String scaleName) {
+        for (Scale scale : scalesList) {
+            if (scale.getScaleName().equals(scaleName)) {
+                return scale;
             }
         }
         return null;
     }
 
     public double convert(String inputScale, String outputScale) {
-        double interimTemp = ScalesEnum.valueOf(findEnumName(inputScale)).createNewScaleObject().convertToCelsius(temperature);
+        double interimTemp = Objects.requireNonNull(findScale(inputScale)).convertToCelsius(temperature);
 
-        return ScalesEnum.valueOf(findEnumName(outputScale)).createNewScaleObject().convertFromCelsius(interimTemp);
+        return Objects.requireNonNull(findScale(outputScale)).convertFromCelsius(interimTemp);
     }
+
 }

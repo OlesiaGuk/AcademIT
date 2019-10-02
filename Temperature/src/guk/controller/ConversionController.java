@@ -1,6 +1,7 @@
 package guk.controller;
 
 import guk.model.ConversionModel;
+import guk.model.Scale;
 import guk.view.ConversionView;
 
 public class ConversionController implements ControllerInterface {
@@ -17,5 +18,16 @@ public class ConversionController implements ControllerInterface {
         model.setTemperature(temperature);
 
         return model.convert(inputScale, outputScale);
+    }
+
+    @Override
+    public String[] getScalesNames() {
+        String[] array = new String[model.getScalesList().size()];
+        int i = 0;
+        for (Scale scale : model.getScalesList()) {
+            array[i] = scale.getScaleName();
+            i++;
+        }
+        return array;
     }
 }

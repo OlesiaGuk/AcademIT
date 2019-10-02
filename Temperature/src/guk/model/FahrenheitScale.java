@@ -4,6 +4,11 @@ import static guk.model.UtilityFunctions.twoDecimalPlacesRound;
 
 public class FahrenheitScale implements Scale {
     @Override
+    public String getScaleName() {
+        return "Градусы Фаренгейта";
+    }
+
+    @Override
     public double convertToCelsius(double temperature) {
         return twoDecimalPlacesRound((temperature - 32) * 5 / 9);
     }

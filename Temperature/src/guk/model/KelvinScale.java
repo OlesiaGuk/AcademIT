@@ -4,6 +4,11 @@ import static guk.model.UtilityFunctions.twoDecimalPlacesRound;
 
 public class KelvinScale implements Scale {
     @Override
+    public String getScaleName() {
+        return "Кельвины";
+    }
+
+    @Override
     public double convertToCelsius(double temperature) {
         return twoDecimalPlacesRound(temperature - 273.15);
     }
