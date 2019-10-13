@@ -25,7 +25,7 @@ public class CSV {
 
                     for (int i = 0; i < line.length(); i++) {
                         if (line.charAt(i) == '"') {
-                            if (line.charAt(i + 1) != '"') {
+                            if ((i + 1) == line.length() || line.charAt(i + 1) != '"') {
                                 hasQuotes = !hasQuotes;
                             } else if (line.charAt(i + 1) == '"' && line.charAt(i + 2) == '"') {
                                 out.print(line.charAt(i));
@@ -62,7 +62,7 @@ public class CSV {
             } catch (FileNotFoundException e) {
                 System.out.println("Файл не найден: " + e.getMessage());
             } catch (Exception e) {
-                System.out.println("Ошибка при работе с файлом: " + e.getMessage());
+                System.out.println("Ошибка при работе с файлом! " + e.getClass() + ": " + e.getMessage());
             }
         }
     }
