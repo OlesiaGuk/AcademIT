@@ -213,11 +213,7 @@ public class Tree<T> {
             }
 
             // убираем из дерева самый левый элемент
-            if (minLeftNode.getRight() != null) { //если у самого левого элемента есть правый сын
-                minLeftNodeParent.setLeft(minLeftNode.getRight());
-            } else { //если у самого левого элемента нет правого сына
-                minLeftNodeParent.setLeft(null);
-            }
+            minLeftNodeParent.setLeft(minLeftNode.getRight());//если у самого левого элемента нет правого сына, то передастся null
 
             minLeftNode.setRight(deleteNode.getRight());
         }
